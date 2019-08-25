@@ -1,0 +1,14 @@
+{
+    "name": "lestergallagher/athena",
+    "type": "wordpress-plugin",
+    "description": "",
+    "config": {
+      "vendor-dir": "includes/vendor"
+    },
+    "require": {
+        "firebase/php-jwt": "^3.0",
+		"donatj/phpuseragentparser": "*",
+        "ramsey/uuid": "^3.8",
+        "lodash-php/lodash-php": "^0.0.6"
+    }
+}
