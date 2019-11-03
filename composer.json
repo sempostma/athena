@@ -8,7 +8,6 @@
     "require": {
         "firebase/php-jwt": "^3.0",
 		"donatj/phpuseragentparser": "*",
-        "ramsey/uuid": "^3.8",
-        "lodash-php/lodash-php": "^0.0.6"
+        "ramsey/uuid": "^3.8"
     }
 }

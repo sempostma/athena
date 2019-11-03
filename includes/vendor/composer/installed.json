@@ -98,59 +98,6 @@
         "homepage": "https://github.com/firebase/php-jwt"
     },
     {
-        "name": "lodash-php/lodash-php",
-        "version": "0.0.6",
-        "version_normalized": "0.0.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/lodash-php/lodash-php.git",
-            "reference": "322f11b901e093bcffe3cda35125edbb95bf36fe"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/lodash-php/lodash-php/zipball/322f11b901e093bcffe3cda35125edbb95bf36fe",
-            "reference": "322f11b901e093bcffe3cda35125edbb95bf36fe",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1",
-            "sebastian/comparator": "^1.2 | ^2.0 | ^2.1 | ^3.0",
-            "symfony/property-access": "^2.7 | ^3.0 | ^4.0"
-        },
-        "require-dev": {
-            "bamarni/composer-bin-plugin": "^1.2",
-            "phpdocumentor/reflection-docblock": "^4.2",
-            "phpstan/phpdoc-parser": "^0.3.0"
-        },
-        "time": "2019-03-30T07:37:24+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "src/bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Pierre du Plessis",
-                "email": "open-source@solidworx.co"
-            }
-        ],
-        "description": "A port of Lodash to PHP",
-        "keywords": [
-            "lodash",
-            "php-library",
-            "php-utility",
-            "utilities",
-            "utility",
-            "utility-library"
-        ]
-    },
-    {
         "name": "paragonie/random_compat",
         "version": "v9.99.99",
         "version_normalized": "9.99.99.0",
@@ -282,326 +229,18 @@
         ]
     },
     {
-        "name": "sebastian/comparator",
-        "version": "3.0.2",
-        "version_normalized": "3.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/comparator.git",
-            "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
-            "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1",
-            "sebastian/diff": "^3.0",
-            "sebastian/exporter": "^3.1"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^7.1"
-        },
-        "time": "2018-07-12T15:12:46+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Jeff Welch",
-                "email": "whatthejeff@gmail.com"
-            },
-            {
-                "name": "Volker Dusch",
-                "email": "github@wallbash.com"
-            },
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@2bepublished.at"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            }
-        ],
-        "description": "Provides the functionality to compare PHP values for equality",
-        "homepage": "https://github.com/sebastianbergmann/comparator",
-        "keywords": [
-            "comparator",
-            "compare",
-            "equality"
-        ]
-    },
-    {
-        "name": "sebastian/diff",
-        "version": "3.0.2",
-        "version_normalized": "3.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/diff.git",
-            "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
-            "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^7.5 || ^8.0",
-            "symfony/process": "^2 || ^3.3 || ^4"
-        },
-        "time": "2019-02-04T06:01:07+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kore Nordmann",
-                "email": "mail@kore-nordmann.de"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            }
-        ],
-        "description": "Diff implementation",
-        "homepage": "https://github.com/sebastianbergmann/diff",
-        "keywords": [
-            "diff",
-            "udiff",
-            "unidiff",
-            "unified diff"
-        ]
-    },
-    {
-        "name": "sebastian/exporter",
-        "version": "3.1.1",
-        "version_normalized": "3.1.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/exporter.git",
-            "reference": "06a9a5947f47b3029d76118eb5c22802e5869687"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/06a9a5947f47b3029d76118eb5c22802e5869687",
-            "reference": "06a9a5947f47b3029d76118eb5c22802e5869687",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0",
-            "sebastian/recursion-context": "^3.0"
-        },
-        "require-dev": {
-            "ext-mbstring": "*",
-            "phpunit/phpunit": "^6.0"
-        },
-        "time": "2019-08-11T12:43:14+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            },
-            {
-                "name": "Jeff Welch",
-                "email": "whatthejeff@gmail.com"
-            },
-            {
-                "name": "Volker Dusch",
-                "email": "github@wallbash.com"
-            },
-            {
-                "name": "Adam Harvey",
-                "email": "aharvey@php.net"
-            },
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@gmail.com"
-            }
-        ],
-        "description": "Provides the functionality to export PHP variables for visualization",
-        "homepage": "http://www.github.com/sebastianbergmann/exporter",
-        "keywords": [
-            "export",
-            "exporter"
-        ]
-    },
-    {
-        "name": "sebastian/recursion-context",
-        "version": "3.0.0",
-        "version_normalized": "3.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/recursion-context.git",
-            "reference": "5b0cd723502bac3b006cbf3dbf7a1e3fcefe4fa8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/5b0cd723502bac3b006cbf3dbf7a1e3fcefe4fa8",
-            "reference": "5b0cd723502bac3b006cbf3dbf7a1e3fcefe4fa8",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.0"
-        },
-        "time": "2017-03-03T06:23:57+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Jeff Welch",
-                "email": "whatthejeff@gmail.com"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            },
-            {
-                "name": "Adam Harvey",
-                "email": "aharvey@php.net"
-            }
-        ],
-        "description": "Provides functionality to recursively process PHP variables",
-        "homepage": "http://www.github.com/sebastianbergmann/recursion-context"
-    },
-    {
-        "name": "symfony/inflector",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/inflector.git",
-            "reference": "782e3959ea1fc95923624d6173eaf941ce3029b0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/inflector/zipball/782e3959ea1fc95923624d6173eaf941ce3029b0",
-            "reference": "782e3959ea1fc95923624d6173eaf941ce3029b0",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1.3",
-            "symfony/polyfill-ctype": "~1.8"
-        },
-        "time": "2019-07-25T10:54:24+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Inflector\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@gmail.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Inflector Component",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "inflection",
-            "pluralize",
-            "singularize",
-            "string",
-            "symfony",
-            "words"
-        ]
-    },
-    {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.11.0",
-        "version_normalized": "1.11.0.0",
+        "version": "v1.12.0",
+        "version_normalized": "1.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "82ebae02209c21113908c229e9883c419720738a"
+            "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
-            "reference": "82ebae02209c21113908c229e9883c419720738a",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
+            "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
             "shasum": ""
         },
         "require": {
@@ -610,11 +249,11 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2019-02-06T07:57:58+00:00",
+        "time": "2019-08-06T08:03:45+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.11-dev"
+                "dev-master": "1.12-dev"
             }
         },
         "installation-source": "dist",
@@ -632,12 +271,12 @@
         ],
         "authors": [
             {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            },
-            {
                 "name": "Gert de Pagter",
                 "email": "BackEndTea@gmail.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
             }
         ],
         "description": "Symfony polyfill for ctype functions",
@@ -647,75 +286,6 @@
             "ctype",
             "polyfill",
             "portable"
-        ]
-    },
-    {
-        "name": "symfony/property-access",
-        "version": "v4.3.3",
-        "version_normalized": "4.3.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/property-access.git",
-            "reference": "42f3a6ddcb794c303d8fdbc33faf3f09cfefee62"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/property-access/zipball/42f3a6ddcb794c303d8fdbc33faf3f09cfefee62",
-            "reference": "42f3a6ddcb794c303d8fdbc33faf3f09cfefee62",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1.3",
-            "symfony/inflector": "~3.4|~4.0"
-        },
-        "require-dev": {
-            "symfony/cache": "~3.4|~4.0"
-        },
-        "suggest": {
-            "psr/cache-implementation": "To cache access methods."
-        },
-        "time": "2019-07-24T14:47:54+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\PropertyAccess\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony PropertyAccess Component",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "access",
-            "array",
-            "extraction",
-            "index",
-            "injection",
-            "object",
-            "property",
-            "property path",
-            "reflection"
         ]
     }
 ]

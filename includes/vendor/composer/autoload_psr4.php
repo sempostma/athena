@@ -7,8 +7,6 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
-    'Symfony\\Component\\PropertyAccess\\' => array($vendorDir . '/symfony/property-access'),
-    'Symfony\\Component\\Inflector\\' => array($vendorDir . '/symfony/inflector'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
 );

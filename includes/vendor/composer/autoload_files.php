@@ -8,5 +8,4 @@ $baseDir = dirname(dirname($vendorDir));
 return array(
     '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
     'da5f6548f070d3d306f90eee42dd5de6' => $vendorDir . '/donatj/phpuseragentparser/src/UserAgentParser.php',
-    '91c98f290cee6130db6e4364079af680' => $vendorDir . '/lodash-php/lodash-php/src/bootstrap.php',
 );

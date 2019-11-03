@@ -25,7 +25,15 @@ function var_error_log( $object=null ){
     error_log( $contents );        // log contents of the result of var_dump( $object )
 }
 
-require_once('rest-api-filter-fields.php');
+// Only include the file if we actually have the WP_REST_Controller class.
+if(class_exists( 'WP_REST_Controller' )){
+  require_once('includes/class-rest-api-filter-fields.php');
+}
+
+// Only include the file if we actually have the WP_REST_Controller class.
+if(function_exists( 'wp_api_v2_menus_get_all_menus' )){
+  require_once('includes/wp-rest-api-v2-menus.php');
+}
 
 class Athena {
 
@@ -148,7 +156,8 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
 # (Apache) Always set these headers.
 Header always set Access-Control-Allow-Credentials \"true\"
-Header always set Access-Control-Allow-Origin \"*\"
+Header always set Access-Control-Allow-Origin \"%{HTTP_ORIGIN}e\" env=HTTP_ORIGIN
+Header merge Vary Origin
 Header always set Access-Control-Allow-Methods \"POST, GET, OPTIONS, DELETE, PUT\"
 Header always set Access-Control-Max-Age \"1000\"
 Header always set Access-Control-Allow-Headers \"X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token\"
