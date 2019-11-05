@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Athena
- * Plugin URI:  
- * Description: 
- * Version:     0.3.7
+ * Plugin URI:  https://github.com/sempostma
+ * Description: Bridges the gap between wordpress and Athena Apps
+ * Version:     0.3.8
  * Author:      Sem Postma
  * Author URI:  http://github.com/LesterGallagher
  * License:     MIT
@@ -30,11 +30,6 @@ if(class_exists( 'WP_REST_Controller' )){
   require_once('includes/class-rest-api-filter-fields.php');
 }
 
-// Only include the file if we actually have the WP_REST_Controller class.
-if(function_exists( 'wp_api_v2_menus_get_all_menus' )){
-  require_once('includes/wp-rest-api-v2-menus.php');
-}
-
 class Athena {
 
 	protected $plugin_name;
@@ -49,7 +44,7 @@ class Athena {
 	public function __construct() {
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.3.7';
+		$this->plugin_version = '0.3.8';
 
 		// Load all dependency files.
 		$this->load_dependencies();

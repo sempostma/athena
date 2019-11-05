@@ -241,7 +241,7 @@ class Athena_Simple_Jwt_Authentication_Rest {
 		if ( ( $locations = get_nav_menu_locations() ) && isset( $locations[ $data['id'] ] ) ) {
 			// Replace default empty object with the location object
 			$menu        = get_term( $locations[ $data['id'] ] );
-			$menu->items = wp_api_v2_menus_get_menu_items( $locations[ $data['id'] ] );
+			$menu->items = $this->wp_api_v2_menus_get_menu_items( $locations[ $data['id'] ] );
 		} else {
 			return new WP_Error( 'not_found', 'No location has been found with this id or slug: `' . $data['id'] . '`. Please ensure you passed an existing location ID or location slug.', array( 'status' => 404 ) );
 		}
@@ -279,7 +279,7 @@ class Athena_Simple_Jwt_Authentication_Rest {
 			}
 
 			if($item->child_items) {
-				if(wp_api_v2_menus_dna_test($item->child_items, $child)) {
+				if($this->wp_api_v2_menus_dna_test($item->child_items, $child)) {
 					return true;
 				}
 			}
@@ -324,7 +324,7 @@ class Athena_Simple_Jwt_Authentication_Rest {
 		// push child items into their parent item in the original object
 		do {
 			foreach($child_items as $key => $child_item) {
-				if(wp_api_v2_menus_dna_test($menu_items, $child_item)) {
+				if($this->wp_api_v2_menus_dna_test($menu_items, $child_item)) {
 					unset($child_items[$key]);
 				}
 			}
@@ -346,7 +346,7 @@ class Athena_Simple_Jwt_Authentication_Rest {
 		// This ensure retro compatibility with versions `<= 0.5` when this endpoint
 		//   was allowing locations id in place of menus id
 		if ( has_nav_menu( $data['id'] ) ) {
-			$menu = wp_api_v2_locations_get_menu_data( $data );
+			$menu = $this->wp_api_v2_locations_get_menu_data( $data );
 		} else if ( is_nav_menu( $data['id'] ) ) {
 			if ( is_int( $data['id'] ) ) {
 				$id = $data['id'];
@@ -354,7 +354,7 @@ class Athena_Simple_Jwt_Authentication_Rest {
 				$id = wp_get_nav_menu_object( $data['id'] );
 			}
 			$menu        = get_term( $id );
-			$menu->items = wp_api_v2_menus_get_menu_items( $id );
+			$menu->items = $this->wp_api_v2_menus_get_menu_items( $id );
 		} else {
 			return new WP_Error( 'not_found', 'No menu has been found with this id or slug: `' . $data['id'] . '`. Please ensure you passed an existing menu ID, menu slug, location ID or location slug.', array( 'status' => 404 ) );
 		}
