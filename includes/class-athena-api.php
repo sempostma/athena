@@ -4,7 +4,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class Athena_Simple_Jwt_Authentication_Api {
+class Athena_Api {
 
 	/**
 	 * Get current user IP.
@@ -38,9 +38,14 @@ class Athena_Simple_Jwt_Authentication_Api {
 	 */
 	public static function get_db_settings() {
 		return get_option( 'athena_settings' );
-
 	}
 
+	public static function set_db_setting($key, $value) {
+		$settings = get_option( 'athena_settings' );
+		$settings[$key] = $value;
+		update_option('athena_settings', $settings);
+		return $settings;
+	}
 
 	/**
 	 * Get the auth key.
@@ -58,7 +63,52 @@ class Athena_Simple_Jwt_Authentication_Api {
 			}
 		}
 		return false;
+	}
 
+	/**
+	 * Get firebase public keys
+	 *
+	 * @since 1.0
+	 * @return string
+	 */
+	public static function get_firebase_cached_public_keys() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['firebase_cached_public_keys'];
+		}
+		return null;
+	}
+
+	/**
+	 * Get firebase public keys
+	 *
+	 * @since 1.0
+	 * @return string
+	 */
+	public static function set_firebase_cached_public_keys($value) {
+		self::set_db_setting('firebase_cached_public_keys', $value);
+	}
+
+	public static function get_use_firebase_jwt() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['use_firebase_jwt'];
+		}
+		return null;
+	}
+
+	/**
+	 * Get firebase public keys
+	 *
+	 * @since 1.0
+	 * @return string
+	 */
+	public static function get_firebase_app_id() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['firebase_app_id'];
+		}
+		return null;
 	}
 
 	/**
@@ -73,7 +123,20 @@ class Athena_Simple_Jwt_Authentication_Api {
 			return $settings['access_control_allow_origin'];
 		}
 		return false;
+	}
 
+	/**
+	 * Get the Access Control Allow Origin Setting
+	 *
+	 * @since 1.0
+	 * @return string
+	 */
+	public static function get_app_modules_post_type_enabled() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['app_modules_post_type_enabled'];
+		}
+		return false;
 	}
 
 	/**

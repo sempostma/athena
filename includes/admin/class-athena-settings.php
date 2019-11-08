@@ -67,21 +67,31 @@ class athena_Settings {
 		);
 
 		add_settings_field(
-			'enable_cors',
-			sprintf( __( 'Enable %s', 'athena' ), '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="nofollow">CORS</a>' ),
-			array( $this, 'settings_cors_callback' ),
+			'app_modules_post_type_enabled',
+			__( 'App modules post type enabled', 'athena' ),
+			array( $this, 'settings_app_modules_post_type_enabled_callback' ),
 			'athena',
 			'athena_section'
 		);
 
 		add_settings_field(
-			'access_control_allow_origin',
-			__( 'Access Control Allow Origin', 'athena' ),
-			array( $this, 'settings_access_control_allow_origin_callback' ),
+			'use_firebase_jwt',
+			__( 'Use Firebase JWT', 'athena' ),
+			array( $this, 'settings_use_firebase_jwt_callback' ),
 			'athena',
 			'athena_section'
 		);
 
+		add_settings_field(
+			'firebase_app_id',
+			__( 'Firebase App ID', 'athena' ),
+			array( $this, 'settings_firebase_app_id_callback' ),
+			'athena',
+			'athena_section'
+		);
+
+
+		
 	}
 
 
@@ -91,8 +101,8 @@ class athena_Settings {
 	 * @since 1.0
 	 */
 	public function settings_secret_callback() {
-		$secret_key = Athena_Simple_Jwt_Authentication_Api::get_key();
-		$is_global  = Athena_Simple_Jwt_Authentication_Api::is_global( 'ATHENA_SECRET_KEY' );
+		$secret_key = Athena_Api::get_key();
+		$is_global  = Athena_Api::is_global( 'ATHENA_SECRET_KEY' );
 		include plugin_dir_path( __FILE__ ) . 'views/settings/secret-key.php';
 
 	}
@@ -104,8 +114,8 @@ class athena_Settings {
 	 * @since 1.0
 	 */
 	public function settings_cors_callback() {
-		$enable_cors = Athena_Simple_Jwt_Authentication_Api::get_cors();
-		$is_global   = Athena_Simple_Jwt_Authentication_Api::is_global( 'ATHENA_CORS_ENABLE' );
+		$enable_cors = Athena_Api::get_cors();
+		$is_global   = Athena_Api::is_global( 'ATHENA_CORS_ENABLE' );
 		include plugin_dir_path( __FILE__ ) . 'views/settings/enable-cors.php';
 	}
 
@@ -115,9 +125,24 @@ class athena_Settings {
 	 * @since 1.0
 	 */
 	public function settings_access_control_allow_origin_callback() {
-		$access_control_allow_origin = Athena_Simple_Jwt_Authentication_Api::get_access_control_allow_origin();
+		$access_control_allow_origin = Athena_Api::get_access_control_allow_origin();
 		include plugin_dir_path( __FILE__ ) . 'views/settings/access_control_allow_origin.php';
 	}
+
+	public function settings_app_modules_post_type_enabled_callback() {
+		$app_modules_post_type_enabled = Athena_Api::get_app_modules_post_type_enabled();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/app_modules_post_type_enabled.php';
+	}
+
+	public function settings_firebase_app_id_callback() {
+		$firebase_app_id = Athena_Api::get_firebase_app_id();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/firebase_app_id.php';
+	}
+
+	public function settings_use_firebase_jwt_callback() {
+		$use_firebase_jwt = Athena_Api::get_use_firebase_jwt();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/use_firebase_jwt.php';
+	}	
 
 	/**
 	 * Section callback.

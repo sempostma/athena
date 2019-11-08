@@ -70,15 +70,16 @@ class Athena {
 		// Load all Composer dependencies
 		$this->include_file( 'vendor/autoload.php' );
 		$this->include_file( 'class-athena-api.php' );
-
+		
 		// Admin specific includes
 		if ( is_admin() ) {
 			$this->include_file( 'admin/class-athena-settings.php' );
 			$this->include_file( 'admin/class-athena-profile.php' );
 		}
-
+		
 		$this->include_file( 'class-athena-rest.php' );
-
+		$this->include_file( 'class-app-module-post-type.php' );
+		$this->include_file( 'class-firebase-verify-id-tokens.php' );
 	}
 
 	/**
