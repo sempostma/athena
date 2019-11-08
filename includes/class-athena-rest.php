@@ -575,8 +575,18 @@ class Athena_Rest
 			}
 		}
 
-		// Everything is ok, return the user ID stored in the token.
-		return $token->data->user->id;
+		if (Athena_App_Module_Post_Type::is_enabled()) {
+			$token = (array)$token;
+
+			if (array_key_exists('email_verified', $token) && $token['email_verified'] == false) {
+				return $user;
+			}
+			$user = get_user_by( 'email', $token['email'] );
+			return $user->data->ID;
+		} else {
+			// Everything is ok, return the user ID stored in the token.
+			return $token->data->user->id;
+		}
 	}
 
 	/**
@@ -589,10 +599,11 @@ class Athena_Rest
 	 */
 	public function validate_token($output = true)
 	{
+
 		/*
-		 * Looking for the HTTP_AUTHORIZATION header, if not present just
-		 * return the user.
-		 */
+		* Looking for the HTTP_AUTHORIZATION header, if not present just
+		* return the user.
+		*/
 
 		$header_name = defined('SIMPLE_JWT_AUTHENTICATION_HEADER_NAME') ? SIMPLE_JWT_AUTHENTICATION_HEADER_NAME : 'HTTP_AUTHORIZATION';
 		$auth        = isset($_SERVER[$header_name]) ? $_SERVER[$header_name] : false;
@@ -612,10 +623,11 @@ class Athena_Rest
 			);
 		}
 
+
 		/*
-		 * The HTTP_AUTHORIZATION is present verify the format
-		 * if the format is wrong return the user.
-		 */
+			* The HTTP_AUTHORIZATION is present verify the format
+			* if the format is wrong return the user.
+			*/
 		list($token) = sscanf($auth, 'Bearer %s');
 		if (!$token) {
 			return new WP_Error(
@@ -686,6 +698,7 @@ class Athena_Rest
 						)
 					);
 				}
+
 
 				$valid_token = false;
 				// Loop through and check wether we have the current token uuid in the users meta.
