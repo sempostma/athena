@@ -56,7 +56,7 @@ class Athena_Webhooks {
                 return new WP_REST_Response(array(
                     'user_id' => $userIdOrError,
                     'success' => true
-                ), 404);
+                ), 204);
             }
             default: return new WP_Error( 'unkown_webhook_type', 'Unkown webhook type', array( 'status' => 401 ) );
         } 
@@ -69,7 +69,8 @@ class Athena_Webhooks {
             $exists = array_key_exists($key, self::$webhooks_list);
             if ($exists) {
                 $webhook = (array)self::$webhooks_list[$key];
-                return $webhook['secret'] == $secret;
+                return $webhook['secret'] == $secret
+                    && $webhook['method'] === strtoupper('POST');
             }
         }
         return false;
@@ -77,3 +78,5 @@ class Athena_Webhooks {
 }
 
 Athena_Webhooks::init();
+
+

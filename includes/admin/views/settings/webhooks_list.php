@@ -15,11 +15,13 @@ foreach ($webhooks_list as $key => $value) {
     $secret = $value['secret'];
     $type = $value['type'];
     $template = $value['template'];
+    $method = $value['method'];
     ?>
     <div class="athena_settings_webhooks_list_item">
         <h5><?php echo $key; ?></h5>
         <label><?php echo $secret_label; ?></label><br>
         <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][secret]' value='<?php echo $secret; ?>' size="50" autocomplete="off" />
+        <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][method]' value='<?php echo $method; ?>' size="50" autocomplete="off" />
         <br echo/><small><?php echo $secret_description; ?></small><br><br>
         <label><?php echo $action_label; ?></label><br>
         <select minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][type]' value='<?php echo $type; ?>'>
