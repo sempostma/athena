@@ -205,6 +205,16 @@ class Athena_Rest
 				'callback' => array($this, 'verify_firebase_id_token'),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'webhooks/incoming',
+			array(
+				'methods'  => 'POST',
+				'callback' => array(Athena_Webhooks::class, 'incoming_post_request'),
+				'permission_callback' => array(Athena_Webhooks::class, 'validate_incoming_post_request'),
+			)
+		);
 	}
 
 

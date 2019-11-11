@@ -83,7 +83,7 @@ class Athena {
 		$this->include_file( 'class-athena-rest.php' );
 		$this->include_file( 'class-app-module-post-type.php' );
 		$this->include_file( 'class-firebase-verify-id-tokens.php' );
-		$this->include_file( 'restrict-taxonomies.php' );
+		$this->include_file( 'class-webhooks.php' );
 	}
 
 	/**

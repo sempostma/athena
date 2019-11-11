@@ -5,9 +5,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Require the JWT library.
-use \Firebase\JWT\JWT;
-
 class Athena_Firebase_Verify_Id_Tokens_Api {
 
   protected static $plugin_name;
