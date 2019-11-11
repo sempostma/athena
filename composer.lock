@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "donatj/phpuseragentparser",
-            "version": "v0.13.0",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/donatj/PhpUserAgent.git",
-                "reference": "5f2da266d2a386f9b231d4344ae37baf7a467c2d"
+                "reference": "199f22df0c3fd0fb7de024dedbd052064bfb34fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/donatj/PhpUserAgent/zipball/5f2da266d2a386f9b231d4344ae37baf7a467c2d",
-                "reference": "5f2da266d2a386f9b231d4344ae37baf7a467c2d",
+                "url": "https://api.github.com/repos/donatj/PhpUserAgent/zipball/199f22df0c3fd0fb7de024dedbd052064bfb34fb",
+                "reference": "199f22df0c3fd0fb7de024dedbd052064bfb34fb",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
                 "user agent",
                 "useragent"
             ],
-            "time": "2019-03-08T20:52:23+00:00"
+            "time": "2019-09-30T16:32:02+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -105,29 +105,33 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v9.99.99",
+            "version": "v2.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95"
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
-                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
                 "shasum": ""
             },
             "require": {
-                "php": "^7"
+                "php": ">=5.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*",
-                "vimeo/psalm": "^1"
+                "phpunit/phpunit": "4.*|5.*"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
             "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/random.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -146,7 +150,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-07-02T15:55:56+00:00"
+            "time": "2019-01-03T20:59:08+00:00"
         },
         {
             "name": "ramsey/uuid",
