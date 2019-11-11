@@ -1,4 +1,5 @@
 <?php
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -77,6 +78,14 @@ class Athena_Api {
 			return $settings['firebase_cached_public_keys'];
 		}
 		return null;
+	}
+
+	public static function get_app_modules_post_type_force_private() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['app_modules_post_type_force_private'];
+		}
+		return false;
 	}
 
 	/**

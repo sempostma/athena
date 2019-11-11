@@ -1,7 +1,10 @@
 const gulp = require('gulp');
 const zip = require('gulp-zip');
 
-const src = ['./**/!(athena.zip)', '!**/node_modules/**']
+const src = [
+    './**/!(athena.zip)', 
+    '!**/node_modules/**'
+]
 
 gulp.task('zip', () =>
     gulp.src(src)

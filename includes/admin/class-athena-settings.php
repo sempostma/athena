@@ -1,4 +1,11 @@
 <?php
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+
 /**
  * The user profile specific functionality of the plugin.
  *
@@ -75,6 +82,14 @@ class athena_Settings {
 		);
 
 		add_settings_field(
+			'app_modules_post_type_force_private',
+			__( 'Force all App Modules to be private when saved', 'athena' ),
+			array( $this, 'settings_app_modules_post_type_force_private_callback' ),
+			'athena',
+			'athena_section'
+		);
+
+		add_settings_field(
 			'use_firebase_jwt',
 			__( 'Use Firebase JWT', 'athena' ),
 			array( $this, 'settings_use_firebase_jwt_callback' ),
@@ -143,6 +158,13 @@ class athena_Settings {
 		$use_firebase_jwt = Athena_Api::get_use_firebase_jwt();
 		include plugin_dir_path( __FILE__ ) . 'views/settings/use_firebase_jwt.php';
 	}	
+
+	public function settings_app_modules_post_type_force_private_callback() {
+		$app_modules_post_type_force_private = Athena_Api::get_app_modules_post_type_force_private();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/app_modules_post_type_force_private.php';
+	}
+
+	
 
 	/**
 	 * Section callback.

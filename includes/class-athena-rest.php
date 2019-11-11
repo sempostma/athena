@@ -1,5 +1,11 @@
 <?php
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Most of the core functionality of the plugin happen here.
  *

@@ -1,14 +1,15 @@
 <?php
 /**
  * Plugin Name: Athena
- * Plugin URI:  https://github.com/sempostma
+ * Plugin URI:  https://github.com/sempostma/athena
  * Description: Bridges the gap between wordpress and Athena Apps
  * Version:     0.3.8
  * Author:      Sem Postma
- * Author URI:  http://github.com/LesterGallagher
+ * Author URI:  https://github.com/sempostma
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
- *
+ * Domain Path: /languages
+ * 
  * @since 1.0
  */
 
@@ -16,6 +17,8 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+load_plugin_textdomain( 'athena', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 function var_error_log( $object=null ){
     ob_start();                    // start buffer capture
@@ -80,6 +83,7 @@ class Athena {
 		$this->include_file( 'class-athena-rest.php' );
 		$this->include_file( 'class-app-module-post-type.php' );
 		$this->include_file( 'class-firebase-verify-id-tokens.php' );
+		$this->include_file( 'restrict-taxonomies.php' );
 	}
 
 	/**
