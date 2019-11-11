@@ -134,6 +134,14 @@ class Athena_Api {
 		return false;
 	}
 
+	public static function get_webhooks_list() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return (array)$settings['webhooks_list'];
+		}
+		return array();
+	}
+
 	/**
 	 * Get the Access Control Allow Origin Setting
 	 *

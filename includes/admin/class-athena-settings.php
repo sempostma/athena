@@ -105,8 +105,21 @@ class athena_Settings {
 			'athena_section'
 		);
 
+		add_settings_field(
+			'webhooks_list',
+			__( 'Webhooks', 'athena' ),
+			array( $this, 'settings_webhooks_list_callback' ),
+			'athena',
+			'athena_section'
+		);
+
 
 		
+	}
+
+	public function settings_webhooks_list_callback() {
+		$webhooks_list = Athena_Api::get_webhooks_list();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/webhooks_list.php';
 	}
 
 
