@@ -671,7 +671,7 @@ class Athena_Rest
 		try {
 			$use_firebase_jwt = Athena_Api::get_use_firebase_jwt();
 			if ($use_firebase_jwt) {
-				$secret_key = Athena_Api::get_firebase_cached_public_keys();
+				$secret_key = Athena_Firebase_Verify_Id_Tokens_Api::get_firebase_public_keys();
 			}
 			$token = JWT::decode($token, $secret_key, ["RS256"]);
 			// The Token is decoded now validate the iss
