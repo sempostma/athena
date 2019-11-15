@@ -69,8 +69,6 @@ class Athena_App_Module_Post_Type
 
 	static function create_taxonomy()
 	{
-		if (!self::should_add_posttype()) return;
-
 		$labels = array(
 			'name' => _x('App Module Groups', 'taxonomy general name'),
 			'singular_name' => _x('App Module Group', 'taxonomy singular name'),

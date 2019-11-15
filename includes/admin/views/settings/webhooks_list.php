@@ -5,6 +5,7 @@ $key_label = __('Key', 'atehna');
 $secret_label = __('Secret', 'atehna');
 $secret_description = __('Must be a long string of characters. Do not share this with anyone.', 'atehna');
 $action_label = __('Action', 'athena');
+$method_label = __('Method', 'athena');
 $delete = __('Delete', 'atehna');
 echo json_encode($webhooks_list);
 // delete_option('athena_settings');
@@ -21,7 +22,9 @@ foreach ($webhooks_list as $key => $value) {
         <h5><?php echo $key; ?></h5>
         <label><?php echo $secret_label; ?></label><br>
         <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][secret]' value='<?php echo $secret; ?>' size="50" autocomplete="off" />
-        <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][method]' value='<?php echo $method; ?>' size="50" autocomplete="off" />
+        <br>
+        <label><?php echo $method_label; ?></label><br>
+        <input required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][method]' value='<?php echo $method; ?>' size="50" autocomplete="off" />
         <br echo/><small><?php echo $secret_description; ?></small><br><br>
         <label><?php echo $action_label; ?></label><br>
         <select minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][type]' value='<?php echo $type; ?>'>
