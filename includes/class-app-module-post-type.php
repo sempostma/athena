@@ -25,12 +25,13 @@ class Athena_App_Module_Post_Type
 		self::$force_private = Athena_Api::get_app_modules_post_type_force_private();
 
 		if (self::$enabled) {
-			add_action('init', [Athena_App_Module_Post_Type::class, 'create_posttype']);
-			add_action('init', [Athena_App_Module_Post_Type::class, 'create_taxonomy']);
-			add_action('admin_init', [Athena_App_Module_Post_Type::class, 'add_capabilities']);
+			add_action('init', [self::class, 'create_posttype']);
+			add_action('init', [self::class, 'create_taxonomy']);
+			add_action('admin_init', [self::class, 'add_capabilities']);
 			if (self::$force_private) {
-				add_filter('wp_insert_post_data', [Athena_App_Module_Post_Type::class, 'force_type_private']);
+				add_filter('wp_insert_post_data', [self::class, 'force_type_private']);
 			}
+			add_action('rest_api_init', [self::class, 'rest_api_init']);
 		}
 	}
 
@@ -40,6 +41,39 @@ class Athena_App_Module_Post_Type
 			$post['post_status'] = 'private';
 		}
 		return $post;
+	}
+
+	public static function rest_api_init()
+	{
+		register_rest_field(
+			'categories',
+			'meta',
+			array('get_callback' => Athena_Rest::class . '::show_term_meta')
+		);
+
+		if (class_exists('acf')) {
+			register_rest_field(
+				'categories',
+				'acf',
+				array('get_callback' => Athena_Rest::class . '::show_taxonomy_fields')
+			);
+		}
+
+		if (self::should_add_posttype()) {
+			register_rest_field(
+				'app_modules',
+				'meta',
+				array('get_callback' => Athena_Rest::class . '::show_post_meta')
+			);
+
+			if (class_exists('acf')) {
+				register_rest_field(
+					'app_modules',
+					'acf',
+					array('get_callback' => Athena_Rest::class . '::show_page_fields')
+				);
+			}
+		}
 	}
 
 	static function add_capabilities()
@@ -91,7 +125,7 @@ class Athena_App_Module_Post_Type
 			'show_ui' => true,
 			'show_admin_column' => true,
 			'query_var' => true,
-			'rewrite' => array('slug' => 'app-modules-groups'),
+			'rewrite' => array('slug' => 'app-module-groups'),
 			'show_in_rest' => true,
 			'rest_base' => 'app-module-groups'
 		));
@@ -159,7 +193,7 @@ class Athena_App_Module_Post_Type
 			'show_in_rest' => true,
 			'can_export' => true,
 			'rest_base' => 'app-modules',
-			'taxonomies' => array('app-modules-groups', 'categories'),
+			'taxonomies' => array('app-module-groups'),
 		);
 
 		register_post_type('app_modules', $args);

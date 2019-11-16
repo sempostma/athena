@@ -2,7 +2,7 @@
 
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -87,12 +87,31 @@ class Athena_Rest
 	 */
 	public function add_api_routes()
 	{
-
 		register_rest_field(
 			'page',
 			'meta',
-			array('get_callback' => 'show_fields')
+			array('get_callback' => self::class . '::show_post_meta')
 		);
+
+		register_rest_field(
+			'term',
+			'meta',
+			array('get_callback' => self::class . '::show_term_meta')
+		);
+
+		if (class_exists('acf')) {
+			register_rest_field(
+				'page',
+				'acf',
+				array('get_callback' => self::class . '::show_page_fields')
+			);
+
+			register_rest_field(
+				'term',
+				'acf',
+				array('get_callback' => self::class . '::show_taxonomy_fields')
+			);
+		}
 
 		register_rest_route($this->namespace, '/menus', array(
 			'methods'  => 'GET',
@@ -592,12 +611,12 @@ class Athena_Rest
 		}
 
 		if (Athena_App_Module_Post_Type::is_enabled()) {
-			$token = (array)$token;
+			$token = (array) $token;
 
 			if (array_key_exists('email_verified', $token) && $token['email_verified'] == false) {
 				return $user;
 			}
-			$user = get_user_by( 'email', $token['email'] );
+			$user = get_user_by('email', $token['email']);
 			return $user->data->ID;
 		} else {
 			// Everything is ok, return the user ID stored in the token.
@@ -1017,22 +1036,46 @@ class Athena_Rest
 	{
 		return Athena_Firebase_Verify_Id_Tokens_Api::get_firebase_public_keys();
 	}
-}
 
-function show_fields($object, $field_name, $request)
-{
-	$fields = $request->get_param('fields');
-	$meta = get_post_meta($object['id']);
-	if (!isset($meta)) return;
-	$filtered = array();
-
-	foreach ($meta as $key => $value) {
-		if (strpos($key, '_') !== 0) {
-			$filtered[$key] = maybe_unserialize($value[0]);
-		}
+	public static function show_taxonomy_fields($object, $field_name, $request)
+	{
+		$fields = $request->get_param('fields');
+		return (object) get_fields($object['taxonomy'] . '_' . $object['id']);
 	}
 
-	return (object) $filtered;
+	public static function show_page_fields($object, $field_name, $request)
+	{
+		$fields = $request->get_param('fields');
+		return (object) get_fields($object['id']);
+	}
+
+	public static function show_term_meta($object, $field_name, $request)
+	{
+		$fields = $request->get_param('fields');
+		$meta = get_term_meta($object['id']);
+		if (!isset($meta)) return;
+		$filtered = array();
+		foreach ($meta as $key => $value) {
+			if (strpos($key, '_') !== 0) {
+				$filtered[$key] = maybe_unserialize($value[0]);
+			}
+		}
+		return (object) $filtered;
+	}
+
+	public static function show_post_meta($object, $field_name, $request)
+	{
+		$fields = $request->get_param('fields');
+		$meta = get_post_meta($object['id']);
+		if (!isset($meta)) return;
+		$filtered = array();
+		foreach ($meta as $key => $value) {
+			if (strpos($key, '_') !== 0) {
+				$filtered[$key] = maybe_unserialize($value[0]);
+			}
+		}
+		return (object) $filtered;
+	}
 }
 
 new Athena_Rest($plugin_name, $plugin_version);
