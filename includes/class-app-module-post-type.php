@@ -45,34 +45,36 @@ class Athena_App_Module_Post_Type
 
 	public static function rest_api_init()
 	{
-		register_rest_field(
-			'categories',
-			'meta',
-			array('get_callback' => Athena_Rest::class . '::show_term_meta')
-		);
-
-		if (class_exists('acf')) {
+		if (!Athena_Api::get_disable_legacy_support()) {
 			register_rest_field(
 				'categories',
-				'acf',
-				array('get_callback' => Athena_Rest::class . '::show_taxonomy_fields')
+				'meta',
+				array('get_callback' => Athena_Rest::class . '::show_term_meta')
 			);
 		}
 
-		if (self::should_add_posttype()) {
+		// if (class_exists('acf')) {
+			// register_rest_field(
+			// 	'categories',
+			// 	'acf',
+			// 	array('get_callback' => Athena_Rest::class . '::show_taxonomy_fields')
+			// );
+		// }
+
+		if (self::should_add_posttype() && !Athena_Api::get_disable_legacy_support()) {
 			register_rest_field(
 				'app_modules',
 				'meta',
 				array('get_callback' => Athena_Rest::class . '::show_post_meta')
 			);
 
-			if (class_exists('acf')) {
-				register_rest_field(
-					'app_modules',
-					'acf',
-					array('get_callback' => Athena_Rest::class . '::show_page_fields')
-				);
-			}
+			// if (class_exists('acf')) {
+			// 	register_rest_field(
+			// 		'app_modules',
+			// 		'acf',
+			// 		array('get_callback' => Athena_Rest::class . '::show_page_fields')
+			// 	);
+			// }
 		}
 	}
 

@@ -7,7 +7,6 @@
     },
     "require": {
         "firebase/php-jwt": "^5.0",
-		"donatj/phpuseragentparser": "*",
         "ramsey/uuid": "^3.8"
     }
 }

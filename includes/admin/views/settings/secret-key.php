@@ -12,5 +12,5 @@ if ( $is_global ) {
 }
 ?>
 
-<input type="<?php echo $input_type; ?>" name='athena_settings[secret_key]' value='<?php echo $input_value; // phpcs:ignore ?>' <?php echo $readonly; ?> size="50" autocomplete="off" />
+<input type="<?php echo $input_type; ?>" name='athena_settings[secret_key]' minlength="32" value='<?php echo $input_value; // phpcs:ignore ?>' <?php echo $readonly; ?> size="50" autocomplete="off" />
 <br /><small><?php echo esc_html( $description ); ?></small>

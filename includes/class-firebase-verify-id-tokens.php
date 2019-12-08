@@ -26,8 +26,11 @@ class Athena_Firebase_Verify_Id_Tokens_Api {
       return $pkeys;
     } else {
       $pkeys_raw = file_get_contents('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com');
+      $headers = Athena_Api::http_response_header_as_associative_array($http_response_header);
+      $expires = $headers['expires'];
+      $expires = strtotime($expires);
       $pkeys = json_decode($pkeys_raw, true);
-      Athena_Api::set_firebase_cached_public_keys($pkeys);
+      Athena_Api::set_firebase_cached_public_keys($pkeys, $expires);
       return $pkeys;
     }
   }

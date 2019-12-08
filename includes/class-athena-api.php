@@ -66,6 +66,19 @@ class Athena_Api {
 		return false;
 	}
 
+	public static function http_response_header_as_associative_array($http_response_header) {
+    $output = array();
+    if ('HTTP' === substr($http_response_header[0], 0, 4)) {
+        list(, $output['status'], $output['status_text']) = explode(' ', $http_response_header[0]);
+        unset($http_response_header[0]);
+    }
+    foreach ($http_response_header as $v) {
+        $h                         = explode(':', $v, 2);
+        $output[strtolower($h[0])] = $h[1];
+    }
+    return $output;
+}
+
 	/**
 	 * Get firebase public keys
 	 *
@@ -75,7 +88,12 @@ class Athena_Api {
 	public static function get_firebase_cached_public_keys() {
 		$settings = self::get_db_settings();
 		if ( $settings ) {
-			return $settings['firebase_cached_public_keys'];
+			$entry = $settings['firebase_cached_public_keys'];
+			$expires = $entry['expires'];
+			$value = $entry['value'];
+			if (is_numeric($expires) && time() < $expires) {
+				return $value;
+			}
 		}
 		return null;
 	}
@@ -94,8 +112,11 @@ class Athena_Api {
 	 * @since 1.0
 	 * @return string
 	 */
-	public static function set_firebase_cached_public_keys($value) {
-		self::set_db_setting('firebase_cached_public_keys', $value);
+	public static function set_firebase_cached_public_keys($value, $expires) {
+		self::set_db_setting('firebase_cached_public_keys', array(
+			"value" => $value,
+			"expires" => $expires
+		));
 	}
 
 	public static function get_use_firebase_jwt() {
@@ -104,6 +125,14 @@ class Athena_Api {
 			return $settings['use_firebase_jwt'];
 		}
 		return null;
+	}
+
+	public static function get_disable_legacy_support() {
+		$settings = self::get_db_settings();
+		if ( $settings && array_key_exists('disable_legacy_support', $settings) ) {
+			return $settings['disable_legacy_support'];
+		}
+		return false;
 	}
 
 	/**
@@ -128,7 +157,7 @@ class Athena_Api {
 	 */
 	public static function get_access_control_allow_origin() {
 		$settings = self::get_db_settings();
-		if ( $settings ) {
+		if ( $settings  && array_key_exists('access_control_allow_origin', $settings) ) {
 			return $settings['access_control_allow_origin'];
 		}
 		return false;
@@ -136,7 +165,7 @@ class Athena_Api {
 
 	public static function get_webhooks_list() {
 		$settings = self::get_db_settings();
-		if ( $settings ) {
+		if ( $settings && array_key_exists('webhooks_list', $settings)) {
 			return (array)$settings['webhooks_list'];
 		}
 		return array();

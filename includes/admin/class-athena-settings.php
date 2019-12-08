@@ -113,8 +113,18 @@ class athena_Settings {
 			'athena_section'
 		);
 
+		add_settings_field(
+			'disable_legacy_support',
+			__( 'Disable legacy support', 'athena' ),
+			array( $this, 'settings_disable_legacy_support_callback' ),
+			'athena',
+			'athena_section'
+		);
+	}
 
-		
+	public function settings_disable_legacy_support_callback() {
+		$disable_legacy_support = Athena_Api::get_disable_legacy_support();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/disable_legacy_support.php';
 	}
 
 	public function settings_webhooks_list_callback() {

@@ -72,6 +72,8 @@ class Athena {
 
 		// Load all Composer dependencies
 		$this->include_file( 'vendor/autoload.php' );
+		$this->include_file( 'class-athena-cache.php' );
+		$this->include_file( 'class-acf-extension.php' );
 		$this->include_file( 'class-athena-api.php' );
 		
 		// Admin specific includes
