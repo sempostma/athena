@@ -38,7 +38,11 @@ class Athena_Api {
 	 * @return array
 	 */
 	public static function get_db_settings() {
-		return get_option( 'athena_settings' );
+		$settings = Athena_Cache::cache_get('athena_settings');
+		if ($settings) return $settings;
+		$settings = get_option( 'athena_settings' );
+		Athena_Cache::cache_put('athena_settings', $settings);
+		return $settings;
 	}
 
 	public static function set_db_setting($key, $value) {
@@ -123,6 +127,14 @@ class Athena_Api {
 		$settings = self::get_db_settings();
 		if ( $settings ) {
 			return $settings['use_firebase_jwt'];
+		}
+		return null;
+	}
+
+	public static function get_show_acf_in_api() {
+		$settings = self::get_db_settings();
+		if ( $settings ) {
+			return $settings['show_acf_in_api'];
 		}
 		return null;
 	}

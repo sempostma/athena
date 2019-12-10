@@ -120,6 +120,19 @@ class athena_Settings {
 			'athena',
 			'athena_section'
 		);
+
+		add_settings_field(
+			'show_acf_in_api',
+			__( 'Show ACF in rest api', 'athena' ),
+			array( $this, 'settings_show_acf_in_api_callback' ),
+			'athena',
+			'athena_section'
+		);
+	}
+
+	public function settings_show_acf_in_api_callback() {
+		$show_acf_in_api = Athena_Api::get_show_acf_in_api();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/show_acf_in_api.php';
 	}
 
 	public function settings_disable_legacy_support_callback() {

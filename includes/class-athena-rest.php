@@ -55,9 +55,6 @@ class Athena_Rest
 	{
 		add_action('rest_api_init', array($this, 'add_api_routes'));
 		add_filter('rest_pre_dispatch', array($this, 'rest_pre_dispatch'), 10, 2);
-		add_filter('rest_post_dispatch', array($this, 'rest_post_dispatch'), 10, 2);
-		add_filter('rest_request_before_callbacks', array($this, 'rest_request_before_callbacks'), 10, 2);
-		add_filter('rest_request_after_callbacks', array($this, 'rest_request_after_callbacks'), 10, 2);
 		$this->gutenberg_compatibility();
 	}
 
@@ -119,18 +116,24 @@ class Athena_Rest
 			);
 		}
 
-		if (class_exists('acf')) {
-			// register_rest_field(
-			// 	'page',
-			// 	'acf',
-			// 	array('get_callback' => self::class . '::show_page_fields')
-			// );
+		if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
+			register_rest_field(
+				'page',
+				'acf',
+				array('get_callback' => self::class . '::show_post_fields')
+			);
 
-			// register_rest_field(
-			// 	'term',
-			// 	'acf',
-			// 	array('get_callback' => self::class . '::show_taxonomy_fields')
-			// );
+			register_rest_field(
+				'post',
+				'acf',
+				array('get_callback' => self::class . '::show_post_fields')
+			);
+
+			register_rest_field(
+				'term',
+				'acf',
+				array('get_callback' => self::class . '::show_taxonomy_fields')
+			);
 		}
 
 		register_rest_route($this->namespace, '/menus', array(
@@ -269,18 +272,18 @@ class Athena_Rest
 	public function wp_api_v2_menus_get_all_menus()
 	{
 		$menus = get_terms('nav_menu', array('hide_empty' => true));
-		// foreach ($menus as $key => $menu) {
-		// 	// check if there is acf installed
-		// 	if (class_exists('acf')) {
-		// 		$fields =  self::get_fields_cached($menu);
-		// 		if (!empty($fields)) {
-		// 			foreach ($fields as $field_key => $item) {
-		// 				// add all acf custom fields
-		// 				$menus[$key]->$field_key = $item;
-		// 			}
-		// 		}
-		// 	}
-		// }
+		foreach ($menus as $key => $menu) {
+			// check if there is acf installed
+			if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
+				$fields =  get_fields($menu);
+				if (!empty($fields)) {
+					foreach ($fields as $field_key => $item) {
+						// add all acf custom fields
+						$menus[$key]->$field_key = $item;
+					}
+				}
+			}
+		}
 
 		return $menus;
 	}
@@ -329,15 +332,15 @@ class Athena_Rest
 		}
 
 		// check if there is acf installed
-		// if (class_exists('acf')) {
-		// 	$fields =  self::get_fields_cached($menu);
-		// 	if (!empty($fields)) {
-		// 		foreach ($fields as $field_key => $item) {
-		// 			// add all acf custom fields
-		// 			$menu->$field_key = $item;
-		// 		}
-		// 	}
-		// }
+		if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
+			$fields =  get_fields($menu);
+			if (!empty($fields)) {
+				foreach ($fields as $field_key => $item) {
+					// add all acf custom fields
+					$menu->$field_key = $item;
+				}
+			}
+		}
 
 		return $menu;
 	}
@@ -383,17 +386,17 @@ class Athena_Rest
 		$menu_items = wp_get_nav_menu_items($id);
 
 		// check if there is acf installed
-		// if (class_exists('acf')) {
-		// 	foreach ($menu_items as $menu_key => $menu_item) {
-		// 		$fields =  self::get_fields_cached($menu_item->ID);
-		// 		if (!empty($fields)) {
-		// 			foreach ($fields as $field_key => $item) {
-		// 				// add all acf custom fields
-		// 				$menu_items[$menu_key]->$field_key = $item;
-		// 			}
-		// 		}
-		// 	}
-		// }
+		if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
+			foreach ($menu_items as $menu_key => $menu_item) {
+				$fields =  get_fields($menu_item->ID);
+				if (!empty($fields)) {
+					foreach ($fields as $field_key => $item) {
+						// add all acf custom fields
+						$menu_items[$menu_key]->$field_key = $item;
+					}
+				}
+			}
+		}
 
 		// wordpress does not group child menu items with parent menu items
 		$child_items = [];
@@ -445,15 +448,15 @@ class Athena_Rest
 		}
 
 		// check if there is acf installed
-		// if (class_exists('acf')) {
-		// 	$fields =  self::get_fields_cached($menu);
-		// 	if (!empty($fields)) {
-		// 		foreach ($fields as $field_key => $item) {
-		// 			// add all acf custom fields
-		// 			$menu->$field_key = $item;
-		// 		}
-		// 	}
-		// }
+		if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
+			$fields =  get_fields($menu);
+			if (!empty($fields)) {
+				foreach ($fields as $field_key => $item) {
+					// add all acf custom fields
+					$menu->$field_key = $item;
+				}
+			}
+		}
 
 		return $menu;
 	}
@@ -1056,35 +1059,6 @@ class Athena_Rest
 		return $request;
 	}
 
-	public function rest_post_dispatch($request, $response)
-	{
-		return $request;
-	}
-
-	public function rest_request_after_callbacks($response, $request)
-	{
-		$data = $this->object_to_array($response)['data'];
-		if (is_array($data)) {
-			for ($i = 0; $i < count($data); $i++) {
-				$data[$i] = $this->handle_rest_entity($data[$i]);
-			}
-		} else {
-			$data = $this->handle_rest_entity($data);
-		}
-		return $data;
-	}
-
-	public function handle_rest_entity($entity)
-	{
-		if (in_array($entity['type'], ['post', 'page', 'app-module', 'app-module-group'])) {
-			$entity['acf'] = 'test';
-		}
-		if (in_array($entity['taxonomy'], ['categories'])) {
-			$entity['acf'] = 'test';
-		}
-		return $entity;
-	}
-
 	public function object_to_array($data)
 	{
 		if ((!is_array($data)) and (!is_object($data)))
@@ -1104,44 +1078,53 @@ class Athena_Rest
 		return $result;
 	}
 
-
-	public function rest_request_before_callbacks($request, $response)
-	{ }
-
 	public function get_firebase_pkeys($request)
 	{
 		return Athena_Firebase_Verify_Id_Tokens_Api::get_firebase_public_keys();
 	}
 
-	public static function get_fields_cached($object_id, $format_value = true)
-	{
-		$cached = Athena_Cache::cache_get($object_id);
-		if ($cached) return $cached;
-		$ret = /* acf */ get_fields($object_id, $format_value);
-		Athena_Cache::cache_put($object_id, $ret);
-		return $ret;
-	}
-
 	public static function show_taxonomy_fields($object, $field_name, $request)
 	{
-		$fields = $request->get_param('fields');
-		return (object) self::get_fields_cached($object['taxonomy'] . '_' . $object['id']);
+		$fields = self::get_rest_request_fields($request);
+		$acf = (object) get_fields($object['taxonomy'] . '_' . $object['id']);
+		if (!isset($acf)) return;
+		if ($fields && !in_array($field_name, $fields)) return;
+		$filtered = array();
+		foreach ($acf as $key => $value) {
+			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			if ($should_show) {
+				$filtered[$key] = $value;
+			}
+		}
+		return (object) $filtered;
 	}
 
-	public static function show_page_fields($object, $field_name, $request)
+	public static function show_post_fields($object, $field_name, $request)
 	{
-		$fields = $request->get_param('fields');
-		return (object)  self::get_fields_cached($object['id']);
+		$fields = self::get_rest_request_fields($request);
+		if ($fields && !in_array($field_name, $fields)) return;
+		$acf = (object) get_fields($object['id']);
+		if (!isset($acf)) return;
+		$filtered = array();
+		foreach ($acf as $key => $value) {
+			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			if ($should_show) {
+				$filtered[$key] = $value;
+			}
+		}
+		return (object) $filtered;
 	}
 
 	public static function show_term_meta($object, $field_name, $request)
 	{
-		$fields = $request->get_param('fields');
-		$meta = get_term_meta($object['id']);
+		$fields = self::get_rest_request_fields($request);
+		$meta = get_post_meta($object['id']);
 		if (!isset($meta)) return;
+		if ($fields && !in_array($field_name, $fields)) return;
 		$filtered = array();
 		foreach ($meta as $key => $value) {
-			if (strpos($key, '_') !== 0) {
+			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			if (strpos($key, '_') !== 0 && $should_show) {
 				$filtered[$key] = maybe_unserialize($value[0]);
 			}
 		}
@@ -1150,7 +1133,6 @@ class Athena_Rest
 
 	public static function get_rest_request_fields($request)
 	{
-
 		$fields = $request->get_param('fields');
 		if ($fields) {
 			$fields = str_replace(" ", "", $fields);
@@ -1165,12 +1147,10 @@ class Athena_Rest
 		$meta = get_post_meta($object['id']);
 		if (!isset($meta)) return;
 		$filtered = array();
+		if ($fields && !in_array($field_name, $fields)) return;
 		foreach ($meta as $key => $value) {
-			$should_show = !$fields || in_array('meta', $fields) || in_array('meta.' . $key, $fields);
-			if (
-				strpos($key, '_') !== 0
-				&& $should_show
-			) {
+			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			if (strpos($key, '_') !== 0 && $should_show) {
 				$filtered[$key] = maybe_unserialize($value[0]);
 			}
 		}
