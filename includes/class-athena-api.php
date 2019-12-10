@@ -136,7 +136,7 @@ class Athena_Api {
 		if ( $settings ) {
 			return $settings['show_acf_in_api'];
 		}
-		return null;
+		return false;
 	}
 
 	public static function get_disable_legacy_support() {

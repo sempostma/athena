@@ -116,6 +116,24 @@ class Athena_Rest
 			);
 		}
 
+		register_rest_field(
+			'page',
+			'fields',
+			array('get_callback' => self::class . '::show_post_meta')
+		);
+
+		register_rest_field(
+			'post',
+			'fields',
+			array('get_callback' => self::class . '::show_post_meta')
+		);
+
+		register_rest_field(
+			'term',
+			'fields',
+			array('get_callback' => self::class . '::show_term_meta')
+		);
+
 		if (class_exists('acf') && Athena_API::get_show_acf_in_api()) {
 			register_rest_field(
 				'page',
@@ -1118,7 +1136,7 @@ class Athena_Rest
 	public static function show_term_meta($object, $field_name, $request)
 	{
 		$fields = self::get_rest_request_fields($request);
-		$meta = get_post_meta($object['id']);
+		$meta = get_term_meta($object['id']);
 		if (!isset($meta)) return;
 		if ($fields && !in_array($field_name, $fields)) return;
 		$filtered = array();
