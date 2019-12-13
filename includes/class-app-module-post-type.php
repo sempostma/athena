@@ -62,7 +62,7 @@ class Athena_App_Module_Post_Type
 		if (self::should_add_posttype()) {
 			register_rest_field(
 				'app_modules',
-				'meta',
+				'fields',
 				array('get_callback' => Athena_Rest::class . '::show_post_meta')
 			);
 

@@ -1138,10 +1138,10 @@ class Athena_Rest
 		$fields = self::get_rest_request_fields($request);
 		$meta = get_term_meta($object['id']);
 		if (!isset($meta)) return;
-		if ($fields && !in_array($field_name, $fields)) return;
+		$includeAll = in_array($field_name, $fields);
 		$filtered = array();
 		foreach ($meta as $key => $value) {
-			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			$should_show = $includeAll || in_array($field_name . '.' . $key, $fields);
 			if (strpos($key, '_') !== 0 && $should_show) {
 				$filtered[$key] = maybe_unserialize($value[0]);
 			}
@@ -1164,10 +1164,11 @@ class Athena_Rest
 		$fields = self::get_rest_request_fields($request);
 		$meta = get_post_meta($object['id']);
 		if (!isset($meta)) return;
+		$includeAll = in_array($field_name, $fields);
 		$filtered = array();
 		if ($fields && !in_array($field_name, $fields)) return;
 		foreach ($meta as $key => $value) {
-			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			$should_show = $includeAll || in_array($field_name . '.' . $key, $fields);
 			if (strpos($key, '_') !== 0 && $should_show) {
 				$filtered[$key] = maybe_unserialize($value[0]);
 			}
