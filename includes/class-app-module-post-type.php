@@ -145,6 +145,7 @@ class Athena_App_Module_Post_Type
 			'thumbnail', // featured images
 			'excerpt', // post excerpt
 			'categories', // post excerpt
+			'page-attributes'
 		);
 		$labels = array(
 			'name' => _x('App Modules', 'plural'),

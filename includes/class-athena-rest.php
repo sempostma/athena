@@ -1123,9 +1123,11 @@ class Athena_Rest
 		if ($fields && !in_array($field_name, $fields)) return;
 		$acf = (object) get_fields($object['id']);
 		if (!isset($acf)) return;
+		$includeAll = !$fields || in_array($field_name, $fields);
 		$filtered = array();
+		if ($fields && !$includeAll) return;
 		foreach ($acf as $key => $value) {
-			$should_show = !$fields || in_array($field_name . '.' . $key, $fields);
+			$should_show = $includeAll || in_array($field_name . '.' . $key, $fields);
 			if ($should_show) {
 				$filtered[$key] = $value;
 			}
@@ -1137,9 +1139,10 @@ class Athena_Rest
 	{
 		$fields = self::get_rest_request_fields($request);
 		$meta = get_term_meta($object['id']);
-		if (!isset($meta)) return;
-		$includeAll = in_array($field_name, $fields);
+		if ($fields && !in_array($field_name, $fields)) return;
+		$includeAll = !$fields || in_array($field_name, $fields);
 		$filtered = array();
+		if ($fields && !$includeAll) return;
 		foreach ($meta as $key => $value) {
 			$should_show = $includeAll || in_array($field_name . '.' . $key, $fields);
 			if (strpos($key, '_') !== 0 && $should_show) {
@@ -1163,10 +1166,10 @@ class Athena_Rest
 	{
 		$fields = self::get_rest_request_fields($request);
 		$meta = get_post_meta($object['id']);
-		if (!isset($meta)) return;
-		$includeAll = in_array($field_name, $fields);
-		$filtered = array();
 		if ($fields && !in_array($field_name, $fields)) return;
+		$includeAll = !$fields || in_array($field_name, $fields);
+		$filtered = array();
+		if ($fields && !$includeAll) return;
 		foreach ($meta as $key => $value) {
 			$should_show = $includeAll || in_array($field_name . '.' . $key, $fields);
 			if (strpos($key, '_') !== 0 && $should_show) {
