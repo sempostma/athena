@@ -112,7 +112,7 @@ class REST_Api_Filter_Fields
       // Foreach property inside the data, check if the key is in the filter.
       foreach ($data as $key => $value) {
         // If the key is in the $filters array, add it to the $filtered_data
-        if (in_array($key, $singleFilters)) {
+        if (array_key_exists($key, $singleFilters)) {
           $filtered_data[$key] = $value;
         }
       }

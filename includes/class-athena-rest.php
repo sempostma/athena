@@ -74,7 +74,6 @@ class Athena_Rest
 			}
 		}
 
-		// if (Athena_Api::get_jwt_authentication_enabled())
 		add_filter('determine_current_user', array($this, 'determine_current_user'), 10);
 	}
 
@@ -271,8 +270,18 @@ class Athena_Rest
 			'webhooks/incoming',
 			array(
 				'methods'  => 'POST',
-				'callback' => array(Athena_Webhooks::class, 'incoming_post_request'),
-				'permission_callback' => array(Athena_Webhooks::class, 'validate_incoming_post_request'),
+				'callback' => array(Athena_Webhooks::class, 'incoming_request'),
+				'permission_callback' => array(Athena_Webhooks::class, 'validate_incoming_request'),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'webhooks/incoming',
+			array(
+				'methods'  => 'GET',
+				'callback' => array(Athena_Webhooks::class, 'incoming_request'),
+				'permission_callback' => array(Athena_Webhooks::class, 'validate_incoming_request'),
 			)
 		);
 	}

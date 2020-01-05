@@ -94,6 +94,7 @@ class Athena_App_Module_Post_Type
 
 	private static function should_add_posttype()
 	{
+		return true;
 		$user_roles = wp_get_current_user()->roles;
 		return in_array('administrator', $user_roles)
 			|| in_array('author', $user_roles)
@@ -125,7 +126,7 @@ class Athena_App_Module_Post_Type
 			'show_ui' => true,
 			'show_admin_column' => true,
 			'query_var' => true,
-			'rewrite' => array('slug' => 'app-module-groups'),
+			'rewrite' => array('slug' => 'app_module_groups'),
 			'show_in_rest' => true,
 			'rest_base' => 'app-module-groups'
 		));
@@ -194,7 +195,7 @@ class Athena_App_Module_Post_Type
 			'show_in_rest' => true,
 			'can_export' => true,
 			'rest_base' => 'app-modules',
-			'taxonomies' => array('app-module-groups'),
+			'taxonomies' => array('app_module_groups'),
 		);
 
 		register_post_type('app_modules', $args);

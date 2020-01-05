@@ -114,6 +114,14 @@ class athena_Settings {
 		);
 
 		add_settings_field(
+			'triggers_list',
+			__( 'Triggers', 'athena' ),
+			array( $this, 'settings_triggers_list_callback' ),
+			'athena',
+			'athena_section'
+		);
+
+		add_settings_field(
 			'disable_legacy_support',
 			__( 'Disable legacy support', 'athena' ),
 			array( $this, 'settings_disable_legacy_support_callback' ),
@@ -145,6 +153,10 @@ class athena_Settings {
 		include plugin_dir_path( __FILE__ ) . 'views/settings/webhooks_list.php';
 	}
 
+	public function settings_triggers_list_callback() {
+		$triggers_list = Athena_Api::get_triggers_list();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/triggers_list.php';
+	}
 
 	/**
 	 * Secret key field callback.
@@ -210,6 +222,48 @@ class athena_Settings {
 	public function settings_section_callback() {
 		echo sprintf( __( 'This is all you need to start using JWT authentication.<br /> You can also specify these in wp-config.php instead using %1$s %2$s', 'athena' ), "<br /><br /><code>define( 'athena_SECRET_KEY', YOURKEY );</code>", "<br /><br /><code>define( 'athena_CORS_ENABLE', true );</code>" ); // phpcs:ignore
 
+		$youHaveMadeAdjustmentsAreYouSureYouWantToQuit = __('You have made adjustments. Are you sure you want to quit', 'athena');
+
+		echo __('<script>
+			function enableTab (e) {
+				if (e.keyCode === 9) { // tab was pressed
+					e.preventDefault();
+
+					// get caret position/selection
+					var val = e.target.value,
+							start = e.target.selectionStart,
+							end = e.target.selectionEnd;
+
+					// set textarea value to: text before caret + tab + text after caret
+					e.target.value = val.substring(0, start) + \'\t\' + val.substring(end);
+
+					// put caret at right position again
+					e.target.selectionStart = e.target.selectionEnd = start + 1;
+
+					// prevent the focus lose
+					return false;
+				}
+			};
+			(function() {
+				var dirty = false;
+				window.addEventListener("input", function(event) {
+					dirty = true;
+				});
+
+				window.onbeforeunload = function(e) {
+					console.log("dirty", dirty)
+					if (dirty) {
+						var dialogText = "' . $youHaveMadeAdjustmentsAreYouSureYouWantToQuit . '?";
+						e.returnValue = dialogText;
+						return dialogText;
+					}
+				};
+
+				window.document.body.addEventListener("submit", function(event) {
+					dirty = false;
+				});
+			})();
+		</script>');
 	}
 
 	/**
