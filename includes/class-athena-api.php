@@ -131,6 +131,15 @@ class Athena_Api
 		return false;
 	}
 
+	public static function get_jwt_email_verified_required()
+	{
+		$settings = self::get_db_settings();
+		if ($settings && array_key_exists('jwt_email_verified_required', $settings)) {
+			return $settings['jwt_email_verified_required'];
+		}
+		return false;
+	}
+
 	/**
 	 * Get firebase public keys
 	 *

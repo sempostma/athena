@@ -667,7 +667,7 @@ class Athena_Rest
 		if (Athena_App_Module_Post_Type::is_enabled()) {
 			$token = (array) $token;
 
-			if (array_key_exists('email_verified', $token) && $token['email_verified'] == false) {
+			if (Athena_Api::get_jwt_email_verified_required() && array_key_exists('email_verified', $token) && $token['email_verified'] == false) {
 				return $user;
 			}
 			$user = get_user_by('email', $token['email']);

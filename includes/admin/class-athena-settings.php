@@ -90,6 +90,14 @@ class athena_Settings {
 		);
 
 		add_settings_field(
+			'jwt_email_verified_required',
+			__( 'Require the user\'s email to be verified for Firebase JWT?', 'athena' ),
+			array( $this, 'jwt_email_verified_required' ),
+			'athena',
+			'athena_section'
+		);
+
+		add_settings_field(
 			'use_firebase_jwt',
 			__( 'Use Firebase JWT', 'athena' ),
 			array( $this, 'settings_use_firebase_jwt_callback' ),
@@ -156,6 +164,11 @@ class athena_Settings {
 	public function settings_triggers_list_callback() {
 		$triggers_list = Athena_Api::get_triggers_list();
 		include plugin_dir_path( __FILE__ ) . 'views/settings/triggers_list.php';
+	}
+
+	public function jwt_email_verified_required() {
+		$jwt_email_verified_required = Athena_Api::get_jwt_email_verified_required();
+		include plugin_dir_path( __FILE__ ) . 'views/settings/jwt_email_verified_required.php';
 	}
 
 	/**

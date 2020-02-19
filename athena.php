@@ -3,7 +3,7 @@
  * Plugin Name: Athena
  * Plugin URI:  https://github.com/sempostma/athena
  * Description: Bridges the gap between wordpress and Athena Apps
- * Version:     0.3.8
+ * Version:     0.3.9
  * Author:      Sem Postma
  * Author URI:  https://github.com/sempostma
  * License:     MIT
@@ -47,7 +47,7 @@ class Athena {
 	public function __construct() {
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.3.8';
+		$this->plugin_version = '0.3.9';
 
 		// Load all dependency files.
 		$this->load_dependencies();
