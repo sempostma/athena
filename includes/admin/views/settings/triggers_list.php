@@ -9,6 +9,7 @@ $method_label = __('Method', 'athena');
 $action_data = __('Data', 'athena');
 $delete = __('Delete', 'athena');
 $tip = __('Tip', 'athena');
+$secret_label = __('Secret', 'athena');
 $passTestParamater = __('Pass ?test=1 to the trigger to echo the data back.', 'athena');
 $json_template_example_title = __('Example json template', 'athena');
 $json_template_example_text = __('the variables, {{ display_name }} and {{ user_email }} for example, are retrieved from the data for a particular action.
@@ -58,12 +59,10 @@ foreach ($triggers_list as $key => $value) {
     $use_php_eval_in_template = array_key_exists('use_php_eval_in_template', $value) && $value['use_php_eval_in_template'] == 'true';
     $test = array_key_exists('test', $value) && $value['test'] == 'true';
     $headers = $value['headers'];
-    echo JSON_Dump::dump($value);
     ?>
     <div class="athena_settings_triggers_list_item">
-        <h5><?php echo $key; ?></h5>
         <label><?php echo $url_label; ?></label><br>
-        <input required type="text" name='athena_settings[triggers_list][<?php echo $key; ?>][url]' value='<?php echo $url; ?>' size="50" autocomplete="off" />
+        <input required type="text" name='athena_settings[triggers_list][<?php echo $key; ?>][url]' value='<?php echo $url; ?>' size="100" autocomplete="off" />
         <br echo/><small><?php echo $url_description; ?></small><br><br>
         <label><?php echo $method_label; ?></label><br>
         <select class="athena_settings_triggers_list_item_method" required name='athena_settings[triggers_list][<?php echo $key; ?>][method]' value='<?php echo $method; ?>'>
@@ -153,7 +152,7 @@ foreach ($triggers_list as $key => $value) {
             var key = 'new_trigger_' + counter++
             jQuery('#athena_settings_triggers_list').append(
                 '<input type="hidden" name="athena_settings[triggers_list][' + key + ']" value="{}" />'
-                + '<input required minlength="80" type="text" name="athena_settings[triggers_list][' + key + '][secret]" value="' + athena_settings_triggers_list_random_string(80) + '" <?php echo $readonly; ?> size="50" autocomplete="off" />'
+                + '<input required minlength="80" type="text" name="athena_settings[triggers_list][' + key + '][secret]" value="' + athena_settings_triggers_list_random_string(80) + '" size="100" autocomplete="off" />'
                 + '<br echo/><small><?php echo $secret_label; ?></small><br><br>'
             );
             event.preventDefault();

@@ -1,7 +1,7 @@
 <?php
 $description = esc_html__( 'Should be a long string of letters, numbers and symbols.', 'athena' );
 $readonly    = '';
-$input_value = $secret_key;
+$input_value = $server_to_server_secret_key;
 $input_type  = 'text';
 // Override with hidden value if it's been defined as a constant.
 ?>

@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const zip = require('gulp-zip');
+const rename = require('gulp-rename');
 
 const src = [
     './**/!(athena.zip)', 
@@ -12,8 +13,8 @@ gulp.task('zip', () =>
         .pipe(gulp.dest('./')));
 
 gulp.task('watch', () => {
-    gulp.watch(src, ['zip']);
+    gulp.watch(src, gulp.series('zip'));
 })
 
-gulp.task('default', ['zip', 'watch']);
+gulp.task('default', gulp.parallel('zip', 'watch'));
 

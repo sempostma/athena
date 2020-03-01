@@ -9,7 +9,7 @@ class JSON_Dump
 {
     public static function dump($value) {
         echo '<pre><code>';
-        self::json_dump_recursive($value);
+        JSON_Dump::json_dump_recursive($value);
         echo '</code></pre>';
     }
 
@@ -28,8 +28,10 @@ class JSON_Dump
                 echo $value;
             } else if (is_null($value)) {
                 echo 'null';
+            } else if (is_bool($value)) {
+                echo $value ? 'true' : 'false';
             } else {
-                json_dump_recursive($value);
+                JSON_Dump::json_dump_recursive($value);
             }
             echo '<br>';
         }

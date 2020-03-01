@@ -24,8 +24,6 @@ $webhook_php_code_explained = __('Accessible variables are:<br>
 - $use_php_eval_in_template = the same as $webhook["use_php_eval_in_template"]
 .', 'athena');
 $webhook_php_code_explained_title = __('Execution context', 'athena');
-echo '<pre><code>' . htmlspecialchars(json_encode($webhooks_list, JSON_PRETTY_PRINT)) . '</code></pre>'
-// delete_option('athena_settings');
 ?>
 <style>
     #athena_settings_webhooks_alert_1 {
@@ -57,7 +55,6 @@ foreach ($webhooks_list as $key => $value) {
     $use_php_eval_in_template = $value['use_php_eval_in_template'];
     ?>
     <div class="athena_settings_webhooks_list_item">
-        <h5><?php echo $key; ?></h5>
         <small><b>Url:</b> /wp-json/athena/v1/webhooks/incoming?key=<?php echo $key; ?>?secret=<?php echo htmlspecialchars($secret); ?></small> 
         <div class="notice notice-info">
             <p><?php echo $secret_may_be_passed_in_body_for_more_security; ?></p>    
@@ -67,7 +64,7 @@ foreach ($webhooks_list as $key => $value) {
         </div>
         <br>
         <label><?php echo $secret_label; ?></label><br>
-        <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][secret]' value='<?php echo htmlspecialchars($secret, ENT_QUOTES, 'UTF-8', false); ?>' size="50" autocomplete="off" />
+        <input minlength="80" required type="text" name='athena_settings[webhooks_list][<?php echo $key; ?>][secret]' value='<?php echo htmlspecialchars($secret, ENT_QUOTES, 'UTF-8', false); ?>' size="100" autocomplete="off" />
         <br echo/><small><?php echo $secret_description; ?></small><br><br>
         <label><?php echo $method_label; ?></label><br>
         <select class="athena_settings_webhooks_list_item_method" required name='athena_settings[webhooks_list][<?php echo $key; ?>][method]' value='<?php echo $method; ?>'>
@@ -91,8 +88,8 @@ foreach ($webhooks_list as $key => $value) {
             <p><?php echo $passTestParamater; ?></p>    
         </div>
         <br>
-        <input type="checkbox"<?php echo $use_php_eval_in_template ? ' checked' : ''; ?> class="athena_settings_webhooks_list_item_use_php_eval_in_template" name="athena_settings[webhooks_list][<?php echo $key; ?>][use_php_eval_in_template]" value="true" id="use_php_eval_in_template<?php echo $i; ?>">
-        <label for="use_php_eval_in_template<?php echo $i; ?>">Use PHP Eval (unsafe)</label>
+        <input type="checkbox"<?php echo $use_php_eval_in_template ? ' checked' : ''; ?> class="athena_settings_webhooks_list_item_use_php_eval_in_template" name="athena_settings[webhooks_list][<?php echo $key; ?>][use_php_eval_in_template]" value="true" id="use_php_eval_in_template<?php echo $key; ?>">
+        <label for="use_php_eval_in_template<?php echo $key; ?>">Use PHP Eval (unsafe)</label>
         <br>
         <label><?php echo $action_data; ?></label><br>
         <textarea onkeydown="enableTab(event)" cols="100" rows="10" name="athena_settings[webhooks_list][<?php echo $key; ?>][template]"><?php echo $template; ?></textarea>
@@ -160,10 +157,10 @@ foreach ($webhooks_list as $key => $value) {
         }
 
         function athena_settings_webhooks_list_create_new(event) {
-            var key = 'new_webhook_' + counter++
+            var key = 'webhook_' + counter++
             jQuery('#athena_settings_webhooks_list').append(
                 '<input type="hidden" name="athena_settings[webhooks_list][' + key + ']" value="{}" />'
-                + '<input required minlength="80" type="text" name="athena_settings[webhooks_list][' + key + '][secret]" value="' + athena_settings_webhooks_list_random_string(80) + '" <?php echo $readonly; ?> size="50" autocomplete="off" />'
+                + '<input required minlength="80" type="text" name="athena_settings[webhooks_list][' + key + '][secret]" value="' + athena_settings_webhooks_list_random_string(80) + '" size="100" autocomplete="off" />'
                 + '<br echo/><small><?php echo $secret_label; ?></small><br><br>'
             );
             event.preventDefault();

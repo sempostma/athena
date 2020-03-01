@@ -55,7 +55,24 @@ class Athena_Rest
 	{
 		add_action('rest_api_init', array($this, 'add_api_routes'));
 		add_filter('rest_pre_dispatch', array($this, 'rest_pre_dispatch'), 10, 2);
+		add_filter('rest_authentication_errors', array($this, 'rest_server_to_server_authentication'));
 		$this->gutenberg_compatibility();
+	}
+
+	public function rest_server_to_server_authentication($result)
+	{
+
+		$yourEncryptAPIKey = $_GET['request'];
+
+		if (yourDecryptFn($yourEncryptAPIKey) === $realKey) :
+			$result = true;
+
+		else :
+			$result = false;
+
+		endif;
+
+		return $result;
 	}
 
 	/**
@@ -729,8 +746,8 @@ class Athena_Rest
 		}
 
 		// Get the Secret Key
-		$secret_key = Athena_Api::get_key();
-		if (!$secret_key) {
+		$secret_or_public_key = Athena_Api::get_key();
+		if (!$secret_or_public_key) {
 			return new WP_Error(
 				'jwt_auth_bad_config',
 				__('JWT is not configurated properly, please contact the admin. The key is missing.', 'athena'),
@@ -744,15 +761,14 @@ class Athena_Rest
 		try {
 			$use_firebase_jwt = Athena_Api::get_use_firebase_jwt();
 			if ($use_firebase_jwt) {
-				$secret_key = Athena_Firebase_Verify_Id_Tokens_Api::get_firebase_public_keys();
+				$secret_or_public_key = Athena_Firebase_Verify_Id_Tokens_Api::get_firebase_public_keys();
 			}
-			$token = JWT::decode($token, $secret_key, ["RS256"]);
+			$token = JWT::decode($token, $secret_or_public_key, ["RS256", 'HS256', 'HS384', 'HS512', 'RS256']);
 			// The Token is decoded now validate the iss
-			$iss = $use_firebase_jwt
-				? Athena_Firebase_Verify_Id_Tokens_Api::get_iss_token()
-				: get_bloginfo('url');
+			$is_valid_firebase_id_token = $use_firebase_jwt && Athena_Firebase_Verify_Id_Tokens_Api::get_iss_token() === $token->iss;
+			$is_issued_by_this_blog_url = get_bloginfo('url') === $token->iss;
 
-			if ($iss !== $token->iss) {
+			if (!$is_valid_firebase_id_token && !$is_issued_by_this_blog_url) {
 				// The iss do not match, return error
 				return new WP_Error(
 					'jwt_auth_bad_iss',
@@ -845,9 +861,6 @@ class Athena_Rest
 	 */
 	public function refresh_token()
 	{
-
-		header("Access-Control-Allow-Origin: *");
-
 		//Check if the token is valid and get user information
 		$token = $this->validate_token(false);
 
@@ -860,7 +873,7 @@ class Athena_Rest
 		if (!$secret_key) {
 			return new WP_Error(
 				'jwt_auth_bad_config',
-				__('JWT is not configurated properly, please contact the admin. The key is missing.', 'athena'),
+				__('JWT is not configured properly, please contact the admin. The key is missing.', 'athena'),
 				array(
 					'status' => 403,
 				)

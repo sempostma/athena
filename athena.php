@@ -30,7 +30,8 @@ function var_error_log( $object=null ){
 
 // Only include the file if we actually have the WP_REST_Controller class.
 if(class_exists( 'WP_REST_Controller' )){
-  require_once('includes/class-rest-api-filter-fields.php');
+	require_once('includes/class-rest-api-filter-fields.php');
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 }
 
 class Athena {
@@ -176,6 +177,42 @@ RewriteRule ^(.*)$ $1 [R=200,L]
 ";
 
 		insert_with_markers($htaccess, $this->plugin_name, explode(PHP_EOL,$lines));
+
+		global $wpdb;
+		$charset_collate = $wpdb->get_charset_collate();
+		$pieces_table = $wpdb->prefix . 'athena_pieces';
+		$collections_table = $wpdb->prefix . 'athena_collections';
+		$users_table = $wpdb->prefix . 'users';
+
+		$sql = "
+		CREATE TABLE IF NOT EXISTS $collections_table (
+			id SERIAL PRIMARY KEY,
+			wp_user_id BIGINT,
+			wp_user_email varchar(100),
+			title VARCHAR(64) NOT NULL,
+			schema JSON NOT NULL,
+			updated_at TIMESTAMP NOT NULL,
+			deleted_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL
+			CONSTRAINT wp_user_id_user_id FOREIGN KEY (wp_user_id) REFERENCES $users_table(id)
+		) $charset_collate;
+
+
+		CREATE TABLE IF NOT EXISTS $pieces_table (
+			id SERIAL PRIMARY KEY,
+			wp_user_id BIGINT,
+			wp_user_email varchar(100),
+			collection_id BIGINT NOT NULL,
+			structure JSON NOT NULL,
+			updated_at TIMESTAMP NOT NULL,
+			deleted_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL,
+			name VARCHAR(127) NOT NULL DEFAULT ''
+			CONSTRAINT wp_user_id_user_id FOREIGN KEY (wp_user_id) REFERENCES $users_table(id)
+			CONSTRAINT collection_id_collection_id FOREIGN KEY (collection_id) REFERENCES $collections_table(id)
+			) $charset_collate;";
+
+		dbDelta( $sql );
 	}
 
 	/**
