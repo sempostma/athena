@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=polyi
 Tags: echo sierra studio, app, athena
 Requires at least: 5.1
 Tested up to: 5.2
-Stable tag: 0.4.0
+Stable tag: 0.4.2
 Requires PHP: 7.2
 License: MIT
 License URI: hhttps://opensource.org/licenses/MIT
@@ -44,7 +44,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-= 0.4.0 = 
+= 0.4.2 = 
 
 
 * Auto update capabilities using [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker).
