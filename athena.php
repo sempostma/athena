@@ -9,7 +9,7 @@
  * Tested up to: 				5.2
  * Tested WP:						5.2
  * Requires PHP: 				7.2
- * Version:     				0.4.1
+ * Version:     				0.3.9
  * Author:      				Sem Postma
  * Author URI:  				https://github.com/sempostma
  * License:     				MIT
@@ -57,7 +57,7 @@ class Athena
 	{
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.4.1';
+		$this->plugin_version = '0.3.9';
 
 		// Load all dependency files.
 		$this->load_dependencies();
@@ -93,7 +93,7 @@ class Athena
 			$this->include_file('admin/class-athena-tools.php');
 			$this->include_file('admin/class-athena-profile.php');
 			$this->include_file('admin/class-app-modules-importer.php');
-			$this->include_file('admin/class-update-checker.php');
+			$this->bootstrap_update_checker();
 		}
 
 		$this->include_file('class-athena-rest.php');
@@ -102,6 +102,19 @@ class Athena
 		$this->include_file('class-webhooks.php');
 		$this->include_file('class-triggers.php');
 		$this->include_file('json-dump.php');
+	}
+
+	private function bootstrap_update_checker()
+	{
+		require plugin_dir_path(__FILE__) . 'plugin-update-checker-4.9/plugin-update-checker.php';
+
+		$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+			'https://github.com/sempostma/athena',
+			__FILE__,
+			'athena'
+		);
+
+		$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 	}
 
 	/**
