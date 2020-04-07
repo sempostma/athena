@@ -3,10 +3,10 @@ Contributors: bunkersem
 Description: Bridges the gap between Wordpress and Athena Apps
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=polyismstudio@gmail.com&item_name=Athena+Wordpress+Plugin&item_number=Athena+Wordpress+Plugin+Campain
 Tags: echo sierra studio, app, athena
-Requires at least: 5.1
-Tested up to: 5.2
-Stable tag: 0.4.2
-Requires PHP: 7.2
+Requires at least: 5.4
+Tested up to: 5.4
+Stable tag: 0.4.3
+Requires PHP: 5.6
 License: MIT
 License URI: hhttps://opensource.org/licenses/MIT
 
@@ -44,8 +44,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-= 0.4.2 = 
-
+= 0.4.1 = 
 
 * Auto update capabilities using [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker).
 * Changed App Modules RSS Importer
+
+= 0.4.2 = 
+
+* Fixed an auto update bug
+
+= 0.4.3 = 
+
+* Changed to minimum wp and php versions
