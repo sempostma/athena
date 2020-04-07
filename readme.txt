@@ -56,3 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 = 0.4.3 = 
 
 * Changed to minimum wp and php versions
+
+= 0.4.4 = 
+
+* Republished version

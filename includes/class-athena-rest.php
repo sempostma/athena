@@ -63,7 +63,7 @@ class Athena_Rest
 	{
 		$result = false;
 
-		$yourEncryptAPIKey = $_GET['request'];
+		// $yourEncryptAPIKey = $_GET['request'];
 
 		// if (yourDecryptFn($yourEncryptAPIKey) === $realKey) :
 		// 	$result = true;

@@ -119,7 +119,7 @@ class Athena_Api
 	public static function get_firebase_cached_public_keys()
 	{
 		$settings = self::get_db_settings();
-		if ($settings) {
+		if ($settings && array_key_exists('firebase_cached_public_keys', $settings)) {
 			$entry = $settings['firebase_cached_public_keys'];
 			$expires = $entry['expires'];
 			$value = $entry['value'];
