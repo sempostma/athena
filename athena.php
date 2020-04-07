@@ -9,7 +9,7 @@
  * Tested up to: 				5.2
  * Tested WP:						5.2
  * Requires PHP: 				5.6
- * Version:     				0.4.4
+ * Version:     				0.4.5
  * Author:      				Sem Postma
  * Author URI:  				https://github.com/sempostma
  * License:     				MIT
@@ -57,7 +57,7 @@ class Athena
 	{
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.4.4';
+		$this->plugin_version = '0.4.5';
 
 		// Load all dependency files.
 		$this->load_dependencies();

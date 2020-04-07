@@ -60,3 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 = 0.4.4 = 
 
 * Republished version
+
+= 0.4.5 = 
+
+* Added composer dependencies to versioning
+
