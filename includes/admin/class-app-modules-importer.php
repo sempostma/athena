@@ -176,8 +176,6 @@ class RSS_App_Modules_Import extends WP_Importer {
 				unset($post['ID']);
 			}
 
-			var_dump($post);
-			
 			$post_id = wp_insert_post($post);
 
 			if ( is_wp_error( $post_id ) )
