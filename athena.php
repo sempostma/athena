@@ -8,7 +8,7 @@
  * Required WP: 				5.1
  * Tested up to: 				5.2
  * Tested WP:						5.2
- * Requires PHP: 				7.2
+ * Requires PHP: 				5.6
  * Version:     				0.4.3
  * Author:      				Sem Postma
  * Author URI:  				https://github.com/sempostma

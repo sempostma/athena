@@ -94,11 +94,11 @@ class RSS_App_Modules_Import extends WP_Importer {
 			if ($post['comment_status']) $post['comment_status'] = (string)$post['comment_status'];
 			$post['post_type'] = $wp->{'post_type'};
 			if ($post['post_type']) $post['post_type'] = (string)$post['post_type'];
-			$post['postmeta'] = array();
-			if ($wp->{'postmeta'}) {
-				foreach ($wp->{'postmeta'} as $postmeta) {
-					$postmeta = $postmeta->children($namespaces['wp']);
-					$post['postmeta'][(string)$postmeta->{'meta_key'}] = (string)$postmeta->{'meta_value'};
+			$post['meta_input'] = array();
+			if ($wp->{'meta_input'}) {
+				foreach ($wp->{'meta_input'} as $meta_input) {
+					$meta_input = $meta_input->children($namespaces['wp']);
+					$post['meta_input'][(string)$meta_input->{'meta_key'}] = (string)$meta_input->{'meta_value'};
 				}
 			}
 			$post['post_date_gmt'] = $item->pubDate;
