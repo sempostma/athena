@@ -3,8 +3,13 @@
   "version": "0.4.3",
   "description": "Bridges the gap between Wordpress and Athena Apps",
   "dependencies": {},
-  "devDependencies": {},
-  "scripts": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.1"
+  },
+  "scripts": {
+    "gulp": "gulp"
+  },
   "author": "",
   "license": "ISC"
 }

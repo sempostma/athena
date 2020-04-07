@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const zip = require('gulp-zip');
-const rename = require('gulp-rename');
 
 const src = [
     './**/!(athena.zip)', 
