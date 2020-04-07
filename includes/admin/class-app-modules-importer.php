@@ -95,8 +95,8 @@ class RSS_App_Modules_Import extends WP_Importer {
 			$post['post_type'] = $wp->{'post_type'};
 			if ($post['post_type']) $post['post_type'] = (string)$post['post_type'];
 			$post['meta_input'] = array();
-			if ($wp->{'meta_input'}) {
-				foreach ($wp->{'meta_input'} as $meta_input) {
+			if ($wp->{'postmeta'}) {
+				foreach ($wp->{'postmeta'} as $meta_input) {
 					$meta_input = $meta_input->children($namespaces['wp']);
 					$post['meta_input'][(string)$meta_input->{'meta_key'}] = (string)$meta_input->{'meta_value'};
 				}
@@ -175,6 +175,8 @@ class RSS_App_Modules_Import extends WP_Importer {
 			  unset($post['post_id']);
 				unset($post['ID']);
 			}
+
+			var_dump($post);
 			
 			$post_id = wp_insert_post($post);
 
