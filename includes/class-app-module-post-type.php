@@ -184,6 +184,7 @@ class Athena_App_Module_Post_Type
 				'read_private_posts' => 'read_private_app_modules',
 				'edit_post' => 'edit_app_modules',
 				'delete_post' => 'delete_app_modules',
+				'delete_posts' => 'delete_app_modules',
 				'read_post' => 'read_app_modules',
 			),
 			'query_var' => true,

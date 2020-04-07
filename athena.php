@@ -1,40 +1,48 @@
 <?php
+
 /**
- * Plugin Name: Athena
- * Plugin URI:  https://github.com/sempostma/athena
- * Description: Bridges the gap between wordpress and Athena Apps
- * Version:     0.3.9
- * Author:      Sem Postma
- * Author URI:  https://github.com/sempostma
- * License:     MIT
- * License URI: https://opensource.org/licenses/MIT
- * Domain Path: /languages
+ * Plugin Name: 				Athena
+ * Plugin URI:  				https://github.com/sempostma/athena
+ * Description: 				Bridges the gap between Wordpress and Athena Apps
+ * Requires at least: 	5.1
+ * Required WP: 				5.1
+ * Tested up to: 				5.2
+ * Tested WP:						5.2
+ * Requires PHP: 				7.2
+ * Version:     				0.4.0
+ * Author:      				Sem Postma
+ * Author URI:  				https://github.com/sempostma
+ * License:     				MIT
+ * License URI: 				https://opensource.org/licenses/MIT
+ * Domain Path: 				/languages
  * 
  * @since 1.0
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
-load_plugin_textdomain( 'athena', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+load_plugin_textdomain('athena', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
-function var_error_log( $object=null ){
-    ob_start();                    // start buffer capture
-    var_dump( $object );           // dump the values
-    $contents = ob_get_contents(); // put the buffer into a variable
-    ob_end_clean();                // end capture
-    error_log( $contents );        // log contents of the result of var_dump( $object )
+function var_error_log($object = null)
+{
+	ob_start();                    // start buffer capture
+	var_dump($object);           // dump the values
+	$contents = ob_get_contents(); // put the buffer into a variable
+	ob_end_clean();                // end capture
+	error_log($contents);        // log contents of the result of var_dump( $object )
 }
 
 // Only include the file if we actually have the WP_REST_Controller class.
-if(class_exists( 'WP_REST_Controller' )){
+if (class_exists('WP_REST_Controller')) {
 	require_once('includes/class-rest-api-filter-fields.php');
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 }
 
-class Athena {
+class Athena
+{
 
 	protected $plugin_name;
 	protected $plugin_version;
@@ -45,19 +53,20 @@ class Athena {
 	 *
 	 * @since 1.0
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.3.9';
+		$this->plugin_version = '0.4.0';
 
 		// Load all dependency files.
 		$this->load_dependencies();
 
 		// Activation hook
-		register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		register_activation_hook(__FILE__, array($this, 'activate'));
 
 		// Deactivation hook
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+		register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 
 		// Localization
 		// add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
@@ -69,26 +78,30 @@ class Athena {
 	 *
 	 * @since 1.0
 	 */
-	public function load_dependencies() {
+	public function load_dependencies()
+	{
 
 		// Load all Composer dependencies
-		$this->include_file( 'vendor/autoload.php' );
-		$this->include_file( 'class-athena-cache.php' );
-		$this->include_file( 'class-acf-extension.php' );
-		$this->include_file( 'class-athena-api.php' );
-		
+		$this->include_file('vendor/autoload.php');
+		$this->include_file('class-athena-cache.php');
+		$this->include_file('class-acf-extension.php');
+		$this->include_file('class-athena-api.php');
+
 		// Admin specific includes
-		if ( is_admin() ) {
-			$this->include_file( 'admin/class-athena-settings.php' );
-			$this->include_file( 'admin/class-athena-profile.php' );
+		if (is_admin()) {
+			$this->include_file('admin/class-athena-settings.php');
+			$this->include_file('admin/class-athena-tools.php');
+			$this->include_file('admin/class-athena-profile.php');
+			$this->include_file('admin/class-app-modules-importer.php');
+			$this->include_file('admin/class-update-checker.php');
 		}
-		
-		$this->include_file( 'class-athena-rest.php' );
-		$this->include_file( 'class-app-module-post-type.php' );
-		$this->include_file( 'class-firebase-verify-id-tokens.php' );
-		$this->include_file( 'class-webhooks.php' );
-		$this->include_file( 'class-triggers.php' );
-		$this->include_file( 'json-dump.php' );
+
+		$this->include_file('class-athena-rest.php');
+		$this->include_file('class-app-module-post-type.php');
+		$this->include_file('class-firebase-verify-id-tokens.php');
+		$this->include_file('class-webhooks.php');
+		$this->include_file('class-triggers.php');
+		$this->include_file('json-dump.php');
 	}
 
 	/**
@@ -97,12 +110,13 @@ class Athena {
 	 * @param string $path relative path to /includes
 	 * @since 1.0
 	 */
-	private function include_file( $path ) {
+	private function include_file($path)
+	{
 		$plugin_name    = $this->plugin_name;
 		$plugin_version = $this->plugin_version;
 
-		$includes_dir = trailingslashit( plugin_dir_path( __FILE__ ) . 'includes' );
-		if ( file_exists( $includes_dir . $path ) ) {
+		$includes_dir = trailingslashit(plugin_dir_path(__FILE__) . 'includes');
+		if (file_exists($includes_dir . $path)) {
 			include_once $includes_dir . $path;
 		}
 	}
@@ -112,8 +126,9 @@ class Athena {
 	 *
 	 * @since    1.0
 	 */
-	public function activate() {
-		$htaccess = get_home_path().".htaccess";
+	public function activate()
+	{
+		$htaccess = get_home_path() . ".htaccess";
 
 		$lines = array();
 		$lines = "
@@ -176,7 +191,7 @@ RewriteRule ^(.*)$ $1 [R=200,L]
 </IfModule>
 ";
 
-		insert_with_markers($htaccess, $this->plugin_name, explode(PHP_EOL,$lines));
+		insert_with_markers($htaccess, $this->plugin_name, explode(PHP_EOL, $lines));
 
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
@@ -186,33 +201,37 @@ RewriteRule ^(.*)$ $1 [R=200,L]
 
 		$sql = "
 		CREATE TABLE IF NOT EXISTS $collections_table (
-			id SERIAL PRIMARY KEY,
-			wp_user_id BIGINT,
+			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+			wp_user_id BIGINT(20) UNSIGNED,
 			wp_user_email varchar(100),
 			title VARCHAR(64) NOT NULL,
-			schema JSON NOT NULL,
-			updated_at TIMESTAMP NOT NULL,
-			deleted_at TIMESTAMP,
-			created_at TIMESTAMP NOT NULL
-			CONSTRAINT wp_user_id_user_id FOREIGN KEY (wp_user_id) REFERENCES $users_table(id)
-		) $charset_collate;
-
-
-		CREATE TABLE IF NOT EXISTS $pieces_table (
-			id SERIAL PRIMARY KEY,
-			wp_user_id BIGINT,
-			wp_user_email varchar(100),
-			collection_id BIGINT NOT NULL,
-			structure JSON NOT NULL,
+			json_schema MEDIUMTEXT,
 			updated_at TIMESTAMP NOT NULL,
 			deleted_at TIMESTAMP,
 			created_at TIMESTAMP NOT NULL,
-			name VARCHAR(127) NOT NULL DEFAULT ''
-			CONSTRAINT wp_user_id_user_id FOREIGN KEY (wp_user_id) REFERENCES $users_table(id)
-			CONSTRAINT collection_id_collection_id FOREIGN KEY (collection_id) REFERENCES $collections_table(id)
-			) $charset_collate;";
+			FOREIGN KEY (wp_user_id) REFERENCES $users_table(id),
+			CONSTRAINT json_schema_check CHECK (JSON_VALID(json_schema))
+		) $charset_collate;";
 
-		dbDelta( $sql );
+		dbDelta($sql);
+
+		$sql = "
+		CREATE TABLE IF NOT EXISTS $pieces_table (
+			id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+			wp_user_id BIGINT(20) UNSIGNED,
+			wp_user_email varchar(100),
+			collection_id BIGINT(20) UNSIGNED NOT NULL,
+			structure MEDIUMTEXT,
+			updated_at TIMESTAMP NOT NULL,
+			deleted_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL,
+			name VARCHAR(127) NOT NULL DEFAULT '',
+			FOREIGN KEY (wp_user_id) REFERENCES $users_table(id),
+			FOREIGN KEY (collection_id) REFERENCES $collections_table(id),
+			CONSTRAINT structure_check CHECK (JSON_VALID(structure))
+		) $charset_collate;";
+
+		dbDelta($sql);
 	}
 
 	/**
@@ -220,8 +239,9 @@ RewriteRule ^(.*)$ $1 [R=200,L]
 	 *
 	 * @since    1.0
 	 */
-	public function deactivate() {
-		$htaccess = get_home_path().".htaccess";
+	public function deactivate()
+	{
+		$htaccess = get_home_path() . ".htaccess";
 
 		$lines = array();
 		$lines[] = "";
@@ -234,16 +254,15 @@ RewriteRule ^(.*)$ $1 [R=200,L]
 	 *
 	 * @since    1.0
 	 */
-	public function load_textdomain() {
+	public function load_textdomain()
+	{
 
 		load_plugin_textdomain(
 			'athena',
 			false,
-			basename( dirname( __FILE__ ) ) . '/languages/'
+			basename(dirname(__FILE__)) . '/languages/'
 		);
-
 	}
-
 }
 
 /**

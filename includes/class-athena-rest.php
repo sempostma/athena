@@ -61,16 +61,17 @@ class Athena_Rest
 
 	public function rest_server_to_server_authentication($result)
 	{
+		$result = false;
 
 		$yourEncryptAPIKey = $_GET['request'];
 
-		if (yourDecryptFn($yourEncryptAPIKey) === $realKey) :
-			$result = true;
+		// if (yourDecryptFn($yourEncryptAPIKey) === $realKey) :
+		// 	$result = true;
 
-		else :
-			$result = false;
+		// else :
+		// 	$result = false;
 
-		endif;
+		// endif;
 
 		return $result;
 	}

@@ -69,6 +69,14 @@ class Athena_Api
 		return $settings;
 	}
 
+	public static function get_dashboard_url()
+	{
+		$settings = self::get_db_settings();
+		if ($settings && array_key_exists('dashboard_url', $settings)) {
+			return $settings['dashboard_url'];
+		} else return 'https://cms.esstudio.site';
+	}
+
 	/**
 	 * Get the auth key.
 	 *
@@ -122,7 +130,7 @@ class Athena_Api
 		return null;
 	}
 
-	public static function get_server_to_server_secret_key() 
+	public static function get_server_to_server_secret_key()
 	{
 		$settings = self::get_db_settings();
 		if ($settings && array_key_exists('server_to_server_secret_key', $settings)) {

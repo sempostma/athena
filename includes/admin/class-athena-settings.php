@@ -5,16 +5,13 @@ if (!defined('WPINC')) {
 	die;
 }
 
-error_reporting(E_ALL | E_STRICT);   // NOT FOR PRODUCTION SERVERS!
-ini_set('display_errors', '1');         // NOT FOR PRODUCTION SERVERS!
-
 /**
  * The user profile specific functionality of the plugin.
  *
  * @since 1.0
  */
 
-class athena_Settings
+class Athena_Settings
 {
 
 	protected $plugin_name;
@@ -128,6 +125,14 @@ class athena_Settings
 			__('Basic configuration', 'athena'),
 			array($this, 'settings_section_callback'),
 			'athena'
+		);
+
+		add_settings_field(
+			'dashboard_url',
+			__('Dashboard url', 'athena'),
+			array($this, 'dashboard_url_callback'),
+			'athena',
+			'athena_section'
 		);
 
 		add_settings_field(
@@ -288,6 +293,12 @@ class athena_Settings
 		include plugin_dir_path(__FILE__) . 'views/settings/server_to_server_secret_key.php';
 	}
 
+	public function dashboard_url_callback()
+	{
+		$dashboard_url = Athena_Api::get_dashboard_url();
+		include plugin_dir_path(__FILE__) . 'views/settings/dashboard_url.php';
+	}
+
 
 	/**
 	 * Enable/disable cors field callback.
@@ -405,4 +416,4 @@ class athena_Settings
 	}
 }
 
-new athena_Settings($plugin_name, $plugin_version);
+new Athena_Settings($plugin_name, $plugin_version);
