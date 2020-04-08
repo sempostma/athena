@@ -69,3 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed a problem with the app module rss importer
 
+= 0.4.7 = 
+
+* Added new OEmbed functionality
+
