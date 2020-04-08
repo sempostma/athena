@@ -84,6 +84,7 @@ class Athena
 		// Load all Composer dependencies
 		$this->include_file('vendor/autoload.php');
 		$this->include_file('class-athena-cache.php');
+		$this->include_file('class-ess-soundtracks-provider.php');
 		$this->include_file('class-acf-extension.php');
 		$this->include_file('class-athena-api.php');
 
@@ -93,7 +94,7 @@ class Athena
 			$this->include_file('admin/class-athena-tools.php');
 			$this->include_file('admin/class-athena-profile.php');
 			$this->include_file('admin/class-app-modules-importer.php');
-			$this->bootstrap_update_checker();
+			$this->include_update_checker();
 		}
 
 		$this->include_file('class-athena-rest.php');
@@ -104,7 +105,7 @@ class Athena
 		$this->include_file('json-dump.php');
 	}
 
-	private function bootstrap_update_checker()
+	private function include_update_checker()
 	{
 		require plugin_dir_path(__FILE__) . 'plugin-update-checker-4.9/plugin-update-checker.php';
 
