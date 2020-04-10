@@ -17,6 +17,8 @@ Bridges the gap between Wordpress and Athena Apps.
 An open source plugin to integrate the wordpress cms with athena apps. You can
 contact 
 
+Download link: https://github.com/sempostma/athena/raw/master/athena.zip
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/athena` directory, or install the plugin through the WordPress plugins screen directly.
