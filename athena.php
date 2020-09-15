@@ -26,15 +26,6 @@ if (!defined('WPINC')) {
 
 load_plugin_textdomain('athena', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 
-function var_error_log($object = null)
-{
-	ob_start();                    // start buffer capture
-	var_dump($object);           // dump the values
-	$contents = ob_get_contents(); // put the buffer into a variable
-	ob_end_clean();                // end capture
-	error_log($contents);        // log contents of the result of var_dump( $object )
-}
-
 // Only include the file if we actually have the WP_REST_Controller class.
 if (class_exists('WP_REST_Controller')) {
 	require_once('includes/class-rest-api-filter-fields.php');
