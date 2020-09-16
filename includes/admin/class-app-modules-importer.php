@@ -117,7 +117,7 @@ class RSS_App_Modules_Import extends WP_Importer {
 			$post['categories'] = array();
 			if ($item->category) {
 				foreach ($item->category as $category) {
-					$post['categories'][] = (string)$category;
+					$post['categories'][] = (string)$category['nicename'];
 				}
 			} else if ($dc) {
 				foreach ($dc->subject as $category) {
@@ -176,8 +176,8 @@ class RSS_App_Modules_Import extends WP_Importer {
 				unset($post['ID']);
 			}
 
-
 			$post_id = wp_insert_post($post);
+			wp_set_object_terms($post_id, $categories, 'categories');
 
 			if ( is_wp_error( $post_id ) )
 				return $post_id;
