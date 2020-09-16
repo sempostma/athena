@@ -1,6 +1,6 @@
 {
   "name": "athena",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Bridges the gap between Wordpress and Athena Apps",
   "dependencies": {},
   "devDependencies": {
@@ -11,5 +11,5 @@
     "gulp": "gulp"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
