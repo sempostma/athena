@@ -75,3 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added new OEmbed functionality
 
+= 0.4.10 = 
+
+* Added attachment importing to the app module importer
+* Fixed new wordpress version warnings
+

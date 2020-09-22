@@ -110,6 +110,9 @@ class Athena_Rest
 			register_rest_route($this->namespace, '/options', array(
 				'methods'  => 'GET',
 				'callback' => array($this, 'get_db_settings'),
+				'permission_callback' => function () {
+					return current_user_can('administrator');
+				}
 			));
 		}
 
@@ -174,21 +177,33 @@ class Athena_Rest
 		register_rest_route($this->namespace, '/menus', array(
 			'methods'  => 'GET',
 			'callback' => array($this, 'wp_api_v2_menus_get_all_menus'),
+			'permission_callback' => function () {
+				return true;
+			}
 		));
 
 		register_rest_route($this->namespace, '/menus/(?P<id>[a-zA-Z0-9_-]+)', array(
 			'methods'  => 'GET',
 			'callback' => array($this, 'wp_api_v2_menus_get_menu_data'),
+			'permission_callback' => function () {
+				return true;
+			}
 		));
 
 		register_rest_route($this->namespace, '/menu-locations/(?P<id>[a-zA-Z0-9_-]+)', array(
 			'methods'  => 'GET',
 			'callback' => array($this, 'wp_api_v2_locations_get_menu_data'),
+			'permission_callback' => function () {
+				return true;
+			}
 		));
 
 		register_rest_route($this->namespace, '/menu-locations', array(
 			'methods'  => 'GET',
 			'callback' => array($this, 'wp_api_v2_menu_get_all_locations'),
+			'permission_callback' => function () {
+				return true;
+			}
 		));
 
 		if (function_exists('wlmapi_get_levels')) {
@@ -198,6 +213,9 @@ class Athena_Rest
 				array(
 					'methods'  => 'GET',
 					'callback' => array($this, 'get_levels_pages'),
+					'permission_callback' => function () {
+						return true;
+					}
 				)
 			);
 
@@ -207,6 +225,9 @@ class Athena_Rest
 				array(
 					'methods'  => 'GET',
 					'callback' => array($this, 'get_user_levels'),
+					'permission_callback' => function () {
+						return true;
+					}
 				)
 			);
 
@@ -216,6 +237,9 @@ class Athena_Rest
 				array(
 					'methods'  => 'GET',
 					'callback' => array($this, 'get_user_levels_pages'),
+					'permission_callback' => function () {
+						return true;
+					}
 				)
 			);
 		}
@@ -226,6 +250,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'generate_token'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -235,6 +262,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'validate_token'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -244,6 +274,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'refresh_token'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -253,6 +286,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'revoke_token'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -262,6 +298,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'reset_password'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -271,6 +310,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'GET',
 				'callback' => array($this, 'get_firebase_pkeys'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 
@@ -280,6 +322,9 @@ class Athena_Rest
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'verify_firebase_id_token'),
+				'permission_callback' => function () {
+					return true;
+				}
 			)
 		);
 

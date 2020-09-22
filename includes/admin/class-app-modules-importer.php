@@ -31,6 +31,8 @@ class RSS_App_Modules_Import extends WP_Importer {
 
 	var $posts = array ();
 	var $file;
+	var $attachment_cache = array ();
+	var $attachment_replace = array ();
 
 	function header() {
 		echo '<div class="wrap">';
@@ -44,13 +46,83 @@ class RSS_App_Modules_Import extends WP_Importer {
 
 	function greet() {
 		echo '<div class="narrow">';
-		echo '<p>'.__('Howdy! This importer allows you to extract app module posts from an RSS 2.0 file into your WordPress site. This is useful if you want to import your posts from a system that is not handled by a custom import tool. Pick an RSS file to upload and click Import.', 'athena').'</p>';
+		echo '<p>'.__('Howdy! This importer allows you to extract app module posts from an RSS 2.0 file into your WordPress site. This is useful if you want to import your posts from a system that is not handled by a custom import tool. Pick an RSS file to upload and click Import. You can even import media if you exported using "Export media with selected content".', 'athena').'</p>';
 		wp_import_upload_form("admin.php?import=rss_app_modules&amp;step=1");
 		echo '</div>';
 	}
 
 	function _normalize_tag( $matches ) {
 		return '<' . strtolower( $matches[1] );
+	}
+
+	function import_attachments() {
+		echo '<p>Starting to import attachments...</p>';
+		echo '<ol>';
+
+		foreach ($this->posts as $post) {
+			if ($post['post_type'] !== 'attachment') continue;
+			echo "<li>".__('Importing attachment...', 'athena');
+
+			$image_url = $post['post_image'];
+			$upload_dir = wp_upload_dir();
+			$filename = basename($image_url);
+			if(wp_mkdir_p($upload_dir['path'])) {
+				$file = $upload_dir['path'] . '/' . $filename;
+				$url = $upload_dir['url'] . '/';
+			}
+			else {
+				$file = $upload_dir['basedir'] . '/' . $filename;
+				$url = $upload_dir['baseurl'] . '/' . $filename;
+			}
+			if (!file_exists ($file)) {
+				$image_data = file_get_contents($image_url);
+				file_put_contents($file, $image_data);
+			}
+			$wp_filetype = wp_check_filetype($filename, null );
+			$attachment = array(
+				'post_mime_type' => $wp_filetype['type'],
+				'post_title' => sanitize_file_name($filename),
+				'post_content' => '',
+				'post_status' => 'inherit',
+				'file' => $file
+			);
+
+			$this->attachment_cache[$image_url] = $attachment;
+			$this->attachment_cache[$post['post_id']] = $attachment;
+			$this->attachment_replace[str_replace($filename, '', $image_url)] = $url;
+
+			_e('Done!', 'athena');
+			echo '</li>';
+		}
+
+		echo '</ol>';
+		echo '<p>Finished importing attachments...</p>';
+	}
+
+
+	function generate_featured_image( $image_url, $post_id  ){
+		$upload_dir = wp_upload_dir();
+		$image_data = file_get_contents($image_url);
+		$filename = basename($image_url);
+		if(wp_mkdir_p($upload_dir['path']))
+		  $file = $upload_dir['path'] . '/' . $filename;
+		else
+		  $file = $upload_dir['basedir'] . '/' . $filename;
+		file_put_contents($file, $image_data);
+	
+		$wp_filetype = wp_check_filetype($filename, null );
+		$attachment = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title' => sanitize_file_name($filename),
+			'post_content' => '',
+			'post_status' => 'inherit',
+			'file' => $file
+		);
+		$attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+		$res1= wp_update_attachment_metadata( $attach_id, $attach_data );
+		$res2= set_post_thumbnail( $post_id, $attach_id );
 	}
 
 	function get_posts() {
@@ -79,6 +151,9 @@ class RSS_App_Modules_Import extends WP_Importer {
 			if ($wp->{'post_id'}) {
 				$post['post_id'] = (string)$wp->{'post_id'};
 				$post['ID'] = (string)$wp->{'post_id'};
+			}
+			if ($wp->{'attachment_url'}) {
+				$post['post_image'] = (string)$wp->{'attachment_url'};
 			}
 			$post['post_parent'] = $wp->{'post_parent'};
 			if ($post['post_parent']) $post['post_parent'] = (string)$post['post_parent'];
@@ -158,13 +233,26 @@ class RSS_App_Modules_Import extends WP_Importer {
 		}
 	}
 
+	function starts_with ($string, $start_string) 
+	{ 
+		$len = strlen($start_string); 
+		return (substr($string, 0, $len) === $start_string); 
+	} 
+
 	function import_posts() {
+		echo '<p>Start to import posts...</p>';
 		echo '<ol>';
 
+		$attachment_replace_before = array_keys($this->attachment_replace);
+		var_dump($attachment_replace_before);
+		var_dump($this->attachment_replace);
+
 		foreach ($this->posts as $post) {
+			if ($post['post_type'] !== 'app_modules') continue;
 			echo "<li>".__('Importing post...', 'athena');
 
 			extract($post);
+
 
 			if (get_post($post_id)) {
 				// do nothing
@@ -176,8 +264,30 @@ class RSS_App_Modules_Import extends WP_Importer {
 				unset($post['ID']);
 			}
 
+			if ($post['post_content']) {
+				$post['post_content'] = str_replace(
+					$attachment_replace_before, 
+					$this->attachment_replace, 
+					$post['post_content']
+				);
+ 			}
+
 			$post_id = wp_insert_post($post);
 			wp_set_object_terms($post_id, $categories, 'categories');
+			
+			if (array_key_exists('_thumbnail_id', $post['meta_input'])) {
+				$thumb_id = $post['meta_input']['_thumbnail_id'];
+				if (array_key_exists($thumb_id, $this->attachment_cache)) {
+					$attachment = $this->attachment_cache[$thumb_id];
+					$file = $attachment['file'];
+					var_dump($attachment);
+					$attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+					require_once(ABSPATH . 'wp-admin/includes/image.php');
+					$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+					wp_update_attachment_metadata( $attach_id, $attach_data );
+					set_post_thumbnail( $post_id, $attach_id );
+				}
+			}
 
 			if ( is_wp_error( $post_id ) )
 				return $post_id;
@@ -193,7 +303,7 @@ class RSS_App_Modules_Import extends WP_Importer {
 		}
 
 		echo '</ol>';
-
+		echo '<p>Finished importing posts...</p>';
 	}
 
 	function import() {
@@ -205,6 +315,7 @@ class RSS_App_Modules_Import extends WP_Importer {
 
 		$this->file = $file['file'];
 		$this->get_posts();
+		$this->import_attachments();
 		$result = $this->import_posts();
 		if ( is_wp_error( $result ) )
 			return $result;
