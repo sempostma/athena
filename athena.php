@@ -181,7 +181,7 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
 # (Apache) Always set these headers.
 Header always set Access-Control-Allow-Credentials \"true\"
-Header always set Access-Control-Allow-Origin \"%{HTTP_ORIGIN}e\" env=HTTP_ORIGIN
+Header always set Access-Control-Allow-Origin \"*\"
 Header merge Vary Origin
 Header always set Access-Control-Allow-Methods \"POST, GET, OPTIONS, DELETE, PUT\"
 Header always set Access-Control-Max-Age \"1000\"
