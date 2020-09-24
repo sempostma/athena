@@ -1,6 +1,6 @@
 {
   "name": "athena",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Bridges the gap between Wordpress and Athena Apps",
   "dependencies": {},
   "devDependencies": {

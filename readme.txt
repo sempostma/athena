@@ -80,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added attachment importing to the app module importer
 * Fixed new wordpress version warnings
 
-= 0.4.12 = 
+= 0.4.11 = 
 
 * Exclude media that was not included in the export file
 
@@ -88,3 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Do not recreate thumbnails
 
+= 0.4.13 = 
+
+* Fixed thumbnail issue
