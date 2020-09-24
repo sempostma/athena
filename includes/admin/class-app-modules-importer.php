@@ -118,7 +118,7 @@ if (class_exists('WP_Importer')) {
 				}
 				
 				$this->attachment_cache[$image_url] = $attach_id;
-				$this->attachment_cache[$post['post_id']] = $attach_id;
+				$this->attachment_cache[strval($post['post_id'])] = $attach_id;
 				$without_extension = $this->uri_without_extension($image_url);
 				$this->attachment_replace[$without_extension] = $url;
 
@@ -139,6 +139,8 @@ if (class_exists('WP_Importer')) {
 				// PHP7: removes this. Retain compatibility.
 				set_magic_quotes_runtime(0);
 			}
+
+			var_dump($this->attachment_cache);
 
 			$rss = simplexml_load_file($this->file)->channel;
 			$this->posts = array();
@@ -250,6 +252,8 @@ if (class_exists('WP_Importer')) {
 		{
 			echo '<p>Start to import posts...</p>';
 			echo '<ol>';
+
+			var_dump($this->attachment_cache);
 
 			$attachment_replace_before = array_keys($this->attachment_replace);
 
