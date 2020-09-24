@@ -96,7 +96,8 @@ if (class_exists('WP_Importer')) {
 				}
 				$file_already_existed = file_exists($file);
 				$sanitized_filename = sanitize_file_name($filename);
-				if (!$file_already_existed) {
+				$attachment = get_page_by_title($sanitized_filename, OBJECT, 'attachment');
+				if (!$attachment) {
 					$wp_filetype = wp_check_filetype($filename, null);
 					$attachment = array(
 						'post_mime_type' => $wp_filetype['type'],
@@ -105,8 +106,11 @@ if (class_exists('WP_Importer')) {
 						'post_status' => 'inherit',
 						'file' => $file
 					);
-					$image_data = file_get_contents($image_url);
-					file_put_contents($file, $image_data);
+					$file_already_existed = file_exists($file);
+					if (!$file_already_existed) {
+						$image_data = file_get_contents($image_url);
+						file_put_contents($file, $image_data);
+					}
 					$attach_id = wp_insert_attachment($attachment, $file);
 					require_once(ABSPATH . 'wp-admin/includes/image.php');
 					$attach_data = wp_generate_attachment_metadata($attach_id, $file);
