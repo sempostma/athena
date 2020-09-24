@@ -94,21 +94,31 @@ if (class_exists('WP_Importer')) {
 					$file = $upload_dir['basedir'] . '/' . $filename;
 					$url = $this->uri_without_extension($upload_dir['baseurl'] . '/' . $filename);
 				}
-				if (!file_exists($file)) {
+				$file_already_existed = file_exists($file);
+				$sanitized_filename = sanitize_file_name($filename);
+				if (!$file_already_existed) {
+					$wp_filetype = wp_check_filetype($filename, null);
+					$attachment = array(
+						'post_mime_type' => $wp_filetype['type'],
+						'post_title' => $sanitized_filename,
+						'post_content' => '',
+						'post_status' => 'inherit',
+						'file' => $file
+					);
 					$image_data = file_get_contents($image_url);
 					file_put_contents($file, $image_data);
+					$attach_id = wp_insert_attachment($attachment, $file);
+					require_once(ABSPATH . 'wp-admin/includes/image.php');
+					$attach_data = wp_generate_attachment_metadata($attach_id, $file);
+					wp_update_attachment_metadata($attach_id, $attach_data);
 				}
-				$wp_filetype = wp_check_filetype($filename, null);
-				$attachment = array(
-					'post_mime_type' => $wp_filetype['type'],
-					'post_title' => sanitize_file_name($filename),
-					'post_content' => '',
-					'post_status' => 'inherit',
-					'file' => $file
-				);
-
-				$this->attachment_cache[$image_url] = $attachment;
-				$this->attachment_cache[$post['post_id']] = $attachment;
+				else {
+					$attachment = get_page_by_title($sanitized_filename, OBJECT, 'attachment');
+					$attach_id = $attachment->ID;
+				}
+				
+				$this->attachment_cache[$image_url] = $attach_id;
+				$this->attachment_cache[$post['post_id']] = $attach_id;
 				$without_extension = $this->uri_without_extension($image_url);
 				$this->attachment_replace[$without_extension] = $url;
 
@@ -120,32 +130,6 @@ if (class_exists('WP_Importer')) {
 			echo '<p>Finished importing attachments...</p>';
 		}
 
-
-		function generate_featured_image($image_url, $post_id)
-		{
-			$upload_dir = wp_upload_dir();
-			$image_data = file_get_contents($image_url);
-			$filename = basename($image_url);
-			if (wp_mkdir_p($upload_dir['path']))
-				$file = $upload_dir['path'] . '/' . $filename;
-			else
-				$file = $upload_dir['basedir'] . '/' . $filename;
-			file_put_contents($file, $image_data);
-
-			$wp_filetype = wp_check_filetype($filename, null);
-			$attachment = array(
-				'post_mime_type' => $wp_filetype['type'],
-				'post_title' => sanitize_file_name($filename),
-				'post_content' => '',
-				'post_status' => 'inherit',
-				'file' => $file
-			);
-			$attach_id = wp_insert_attachment($attachment, $file, $post_id);
-			require_once(ABSPATH . 'wp-admin/includes/image.php');
-			$attach_data = wp_generate_attachment_metadata($attach_id, $file);
-			$res1 = wp_update_attachment_metadata($attach_id, $attach_data);
-			$res2 = set_post_thumbnail($post_id, $attach_id);
-		}
 
 		function get_posts()
 		{
@@ -268,8 +252,6 @@ if (class_exists('WP_Importer')) {
 			echo '<ol>';
 
 			$attachment_replace_before = array_keys($this->attachment_replace);
-			var_dump($attachment_replace_before);
-			var_dump($this->attachment_replace);
 
 			foreach ($this->posts as $post) {
 				if ($post['post_type'] !== 'app_modules') continue;
@@ -302,13 +284,7 @@ if (class_exists('WP_Importer')) {
 				if (array_key_exists('_thumbnail_id', $post['meta_input'])) {
 					$thumb_id = $post['meta_input']['_thumbnail_id'];
 					if (array_key_exists($thumb_id, $this->attachment_cache)) {
-						$attachment = $this->attachment_cache[$thumb_id];
-						$file = $attachment['file'];
-						var_dump($attachment);
-						$attach_id = wp_insert_attachment($attachment, $file, $post_id);
-						require_once(ABSPATH . 'wp-admin/includes/image.php');
-						$attach_data = wp_generate_attachment_metadata($attach_id, $file);
-						wp_update_attachment_metadata($attach_id, $attach_data);
+						$attach_id = $this->attachment_cache[$thumb_id];
 						set_post_thumbnail($post_id, $attach_id);
 					}
 				}
