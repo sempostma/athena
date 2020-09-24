@@ -259,6 +259,13 @@ if (class_exists('WP_Importer')) {
 
 				extract($post);
 
+				if ($post['post_content']) {
+					$post['post_content'] = str_replace(
+						$attachment_replace_before,
+						$this->attachment_replace,
+						$post['post_content']
+					);
+				}
 
 				if (get_post($post_id)) {
 					// do nothing
@@ -270,14 +277,6 @@ if (class_exists('WP_Importer')) {
 					unset($post['ID']);
 				}
 
-				if ($post['post_content']) {
-					$post['post_content'] = str_replace(
-						$attachment_replace_before,
-						$this->attachment_replace,
-						$post['post_content']
-					);
-				}
-
 				$post_id = wp_insert_post($post);
 				wp_set_object_terms($post_id, $categories, 'categories');
 
@@ -285,6 +284,13 @@ if (class_exists('WP_Importer')) {
 					$thumb_id = $post['meta_input']['_thumbnail_id'];
 					if (array_key_exists($thumb_id, $this->attachment_cache)) {
 						$attach_id = $this->attachment_cache[$thumb_id];
+						$attachment = wp_update_post( array(
+							'ID'            => $attach_id,
+							'post_parent'   => $post_id,
+						), true );
+						if( is_wp_error( $attachment ) ) {
+							error_log( print_r( $attachment, 1 ) );
+						}
 						set_post_thumbnail($post_id, $attach_id);
 					}
 				}
