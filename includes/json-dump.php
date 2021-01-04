@@ -14,6 +14,7 @@ class JSON_Dump
     }
 
     private static function json_dump_recursive($value) {
+        if (!is_array($value)) return;
         echo '{<br>';
         foreach ($value as $key => $value) {
             echo htmlspecialchars($key);

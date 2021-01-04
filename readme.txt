@@ -17,6 +17,8 @@ Bridges the gap between Wordpress and Athena Apps.
 An open source plugin to integrate the wordpress cms with athena apps. You can
 contact 
 
+Download link: https://github.com/sempostma/athena/raw/master/athena.zip
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/athena` directory, or install the plugin through the WordPress plugins screen directly.
@@ -69,7 +71,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed a problem with the app module rss importer
 
-= 0.4.7 = 
+= 0.4.9 = 
 
 * Added new OEmbed functionality
 
+= 0.4.10 = 
+
+* Added attachment importing to the app module importer
+* Fixed new wordpress version warnings
+
+= 0.4.11 = 
+
+* Exclude media that was not included in the export file
+
+= 0.4.12 = 
+
+* Do not recreate thumbnails
+
+= 0.4.17 = 
+
+* Fixed thumbnail issue

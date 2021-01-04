@@ -9,7 +9,7 @@
  * Tested up to: 				5.2
  * Tested WP:						5.2
  * Requires PHP: 				5.6
- * Version:     				0.4.7
+ * Version:     				0.4.17
  * Author:      				Sem Postma
  * Author URI:  				https://github.com/sempostma
  * License:     				MIT
@@ -25,15 +25,6 @@ if (!defined('WPINC')) {
 }
 
 load_plugin_textdomain('athena', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-
-function var_error_log($object = null)
-{
-	ob_start();                    // start buffer capture
-	var_dump($object);           // dump the values
-	$contents = ob_get_contents(); // put the buffer into a variable
-	ob_end_clean();                // end capture
-	error_log($contents);        // log contents of the result of var_dump( $object )
-}
 
 // Only include the file if we actually have the WP_REST_Controller class.
 if (class_exists('WP_REST_Controller')) {
@@ -57,7 +48,7 @@ class Athena
 	{
 
 		$this->plugin_name    = 'athena';
-		$this->plugin_version = '0.4.7';
+		$this->plugin_version = '0.4.17';
 
 		// Load all dependency files.
 		$this->load_dependencies();
@@ -190,7 +181,7 @@ RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
 # (Apache) Always set these headers.
 Header always set Access-Control-Allow-Credentials \"true\"
-Header always set Access-Control-Allow-Origin \"%{HTTP_ORIGIN}e\" env=HTTP_ORIGIN
+Header always set Access-Control-Allow-Origin \"*\"
 Header merge Vary Origin
 Header always set Access-Control-Allow-Methods \"POST, GET, OPTIONS, DELETE, PUT\"
 Header always set Access-Control-Max-Age \"1000\"

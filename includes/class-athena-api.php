@@ -175,7 +175,7 @@ class Athena_Api
 	public static function get_use_firebase_jwt()
 	{
 		$settings = self::get_db_settings();
-		if ($settings) {
+		if ($settings && array_key_exists('use_firebase_jwt', $settings)) {
 			return $settings['use_firebase_jwt'];
 		}
 		return null;
@@ -184,7 +184,7 @@ class Athena_Api
 	public static function get_show_acf_in_api()
 	{
 		$settings = self::get_db_settings();
-		if ($settings) {
+		if ($settings && array_key_exists('show_acf_in_api', $settings)) {
 			return $settings['show_acf_in_api'];
 		}
 		return false;
@@ -208,7 +208,7 @@ class Athena_Api
 	public static function get_firebase_app_id()
 	{
 		$settings = self::get_db_settings();
-		if ($settings) {
+		if ($settings && array_key_exists('firebase_app_id', $settings)) {
 			return $settings['firebase_app_id'];
 		}
 		return null;
@@ -223,7 +223,7 @@ class Athena_Api
 	public static function get_access_control_allow_origin()
 	{
 		$settings = self::get_db_settings();
-		if ($settings  && array_key_exists('access_control_allow_origin', $settings)) {
+		if ($settings && array_key_exists('access_control_allow_origin', $settings)) {
 			return $settings['access_control_allow_origin'];
 		}
 		return false;
