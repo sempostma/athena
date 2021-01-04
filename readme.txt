@@ -91,3 +91,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 = 0.4.17 = 
 
 * Fixed thumbnail issue
+
+= 0.4.18 = 
+
+* Fixed importer and added webhook option to ignore errors
+
+= 0.4.19 = 
+
+* Proper versioning
