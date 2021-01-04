@@ -135,34 +135,10 @@ class Athena_Settings
 			'athena_section'
 		);
 
-		add_settings_field(
-			'server_to_server_secret_key',
-			__('JWT Server to Server authentication secret key', 'athena'),
-			array($this, 'settings_server_to_server_secret_callback'),
-			'athena',
-			'athena_section'
-		);
-
-		add_settings_field(
-			'secret_key',
-			__('JWT User authentication secret key', 'athena'),
-			array($this, 'settings_secret_callback'),
-			'athena',
-			'athena_section'
-		);
-
-		add_settings_field(
-			'secret_key',
-			__('JWT User authentication secret key', 'athena'),
-			array($this, 'settings_secret_callback'),
-			'athena',
-			'athena_section'
-		);
-
-		add_settings_field(
-			'jwt_secret_keys',
-			__('JWT authentication secret keys list', 'athena'),
-			array($this, 'jwt_secret_keys_callback'),
+		add_settings_section(
+			'athena_section_app_modules',
+			__('App Modules', 'athena'),
+			array($this, 'settings_section_callback'),
 			'athena',
 			'athena_section'
 		);
@@ -172,7 +148,7 @@ class Athena_Settings
 			__('App modules post type enabled', 'athena'),
 			array($this, 'settings_app_modules_post_type_enabled_callback'),
 			'athena',
-			'athena_section'
+			'athena_section_app_modules'
 		);
 
 		add_settings_field(
@@ -180,15 +156,31 @@ class Athena_Settings
 			__('Force all App Modules to be private when saved', 'athena'),
 			array($this, 'settings_app_modules_post_type_force_private_callback'),
 			'athena',
-			'athena_section'
+			'athena_section_app_modules'
 		);
 
-		add_settings_field(
-			'jwt_email_verified_required',
-			__('Require the user\'s email to be verified for Firebase JWT?', 'athena'),
-			array($this, 'jwt_email_verified_required'),
+		add_settings_section(
+			'athena_section_jwt',
+			__('Simple JWT', 'athena'),
+			array($this, 'settings_section_jwt_callback'),
 			'athena',
 			'athena_section'
+		);
+		
+		add_settings_field(
+			'secret_key',
+			__('JWT User authentication secret key', 'athena'),
+			array($this, 'settings_secret_callback'),
+			'athena',
+			'athena_section_jwt',
+		);
+
+		add_settings_section(
+			'athena_section_firebase_jwt',
+			__('Firebase JWT', 'athena'),
+			array($this, 'settings_section_firebase_jwt_callback'),
+			'athena',
+			'athena_section_jwt'
 		);
 
 		add_settings_field(
@@ -196,7 +188,15 @@ class Athena_Settings
 			__('Use Firebase JWT', 'athena'),
 			array($this, 'settings_use_firebase_jwt_callback'),
 			'athena',
-			'athena_section'
+			'athena_section_firebase_jwt'
+		);
+
+		add_settings_field(
+			'jwt_email_verified_required',
+			__('Require the user\'s email to be verified for Firebase JWT?', 'athena'),
+			array($this, 'jwt_email_verified_required'),
+			'athena',
+			'athena_section_firebase_jwt'
 		);
 
 		add_settings_field(
@@ -204,23 +204,7 @@ class Athena_Settings
 			__('Firebase App ID', 'athena'),
 			array($this, 'settings_firebase_app_id_callback'),
 			'athena',
-			'athena_section'
-		);
-
-		add_settings_field(
-			'webhooks_list',
-			__('Webhooks', 'athena'),
-			array($this, 'settings_webhooks_list_callback'),
-			'athena',
-			'athena_section'
-		);
-
-		add_settings_field(
-			'triggers_list',
-			__('Triggers', 'athena'),
-			array($this, 'settings_triggers_list_callback'),
-			'athena',
-			'athena_section'
+			'athena_section_firebase_jwt'
 		);
 
 		add_settings_field(
@@ -252,28 +236,10 @@ class Athena_Settings
 		include plugin_dir_path(__FILE__) . 'views/settings/disable_legacy_support.php';
 	}
 
-	public function settings_webhooks_list_callback()
-	{
-		$webhooks_list = Athena_Api::get_webhooks_list();
-		include plugin_dir_path(__FILE__) . 'views/settings/webhooks_list.php';
-	}
-
-	public function settings_triggers_list_callback()
-	{
-		$triggers_list = Athena_Api::get_triggers_list();
-		include plugin_dir_path(__FILE__) . 'views/settings/triggers_list.php';
-	}
-
 	public function jwt_email_verified_required()
 	{
 		$jwt_email_verified_required = Athena_Api::get_jwt_email_verified_required();
 		include plugin_dir_path(__FILE__) . 'views/settings/jwt_email_verified_required.php';
-	}
-
-	public function jwt_secret_keys_callback()
-	{
-		$jwt_secret_keys = Athena_Api::get_jwt_secret_keys();
-		include plugin_dir_path(__FILE__) . 'views/settings/jwt_secret_keys.php';
 	}
 
 	/**
@@ -285,12 +251,6 @@ class Athena_Settings
 	{
 		$secret_key = Athena_Api::get_key();
 		include plugin_dir_path(__FILE__) . 'views/settings/secret-key.php';
-	}
-
-	public function settings_server_to_server_secret_callback()
-	{
-		$server_to_server_secret_key = Athena_Api::get_server_to_server_secret_key();
-		include plugin_dir_path(__FILE__) . 'views/settings/server_to_server_secret_key.php';
 	}
 
 	public function dashboard_url_callback()
@@ -346,7 +306,15 @@ class Athena_Settings
 		include plugin_dir_path(__FILE__) . 'views/settings/app_modules_post_type_force_private.php';
 	}
 
+	public function settings_section_firebase_jwt_callback() 
+	{
 
+	}
+
+	public function settings_section_jwt_callback()
+	{
+
+	}
 
 	/**
 	 * Section callback.
@@ -400,9 +368,11 @@ class Athena_Settings
 			})();
 		</script>');
 
+		echo '<details>
+		<summary>Developer information</summary>';
 		echo '<pre><code>';
 		JSON_Dump::dump(Athena_Api::get_db_settings());
-		echo '</code></pre>';
+		echo '</code></pre></details>';
 	}
 
 	/**

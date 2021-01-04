@@ -18,6 +18,7 @@ class Athena_Webhooks
     {
         $key = $request->get_param('key');
         $test = $request->get_query_params()['test'];
+        $ignore_errors = $request->get_query_params()['test'];
         $webhook = (array) self::$webhooks_list[$key];
         $template = $webhook['template'];
         $use_php_eval_in_template = $webhook['use_php_eval_in_template'];
@@ -37,13 +38,23 @@ class Athena_Webhooks
                 $decoded = json_decode($parsed, true);
             }
         } catch (Exception $err) {
-            $data = $err->get_error_data();
-            $data['status'] = 401;
-            return new WP_error(
-                $err->get_error_code(),
-                $err->get_error_message(),
-                $data
-            );
+            if ($ignore_errors) {
+                return new WP_REST_Response(array(
+                    'success' => true,
+                    'exit_silently' => true,
+                    'message' => 'error was ignore: (code: ' . $err->get_error_code() . ', message: ' . $err->get_error_message() . ')'
+                ), 204);
+            } else {
+                $data = $err->get_error_data();
+                $data['status'] = 401;
+                return new WP_error(
+                    $err->get_error_code(),
+                    $err->get_error_message(),
+                    $data
+                );
+            }
+
+
         }
 
         if ($test == '1') {

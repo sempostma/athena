@@ -130,16 +130,6 @@ class Athena_Api
 		return null;
 	}
 
-	public static function get_server_to_server_secret_key()
-	{
-		$settings = self::get_db_settings();
-		if ($settings && array_key_exists('server_to_server_secret_key', $settings)) {
-			$value = $settings['server_to_server_secret_key'];
-			return $value;
-		}
-		return null;
-	}
-
 	public static function get_jwt_secret_keys()
 	{
 		$settings = self::get_db_settings();

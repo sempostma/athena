@@ -84,6 +84,7 @@ class RSS_App_Modules_Import extends WP_Importer {
 			if ($post['post_parent']) $post['post_parent'] = (string)$post['post_parent'];
 			$post['menu_order'] = $wp->{'menu_order'};
 			if ($post['menu_order']) $post['menu_order'] = (string)$post['menu_order'];
+			
 			$post['post_password'] = $wp->{'post_password'};
 			if ($post['post_password']) $post['post_password'] = (string)$post['post_password'];
 			$post['is_sticky'] = $wp->{'is_sticky'};
@@ -165,6 +166,8 @@ class RSS_App_Modules_Import extends WP_Importer {
 			echo "<li>".__('Importing post...', 'athena');
 
 			extract($post);
+
+			if ($post_type !== 'app_modules') continue;
 
 			if (get_post($post_id)) {
 				// do nothing

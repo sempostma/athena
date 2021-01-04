@@ -55,25 +55,7 @@ class Athena_Rest
 	{
 		add_action('rest_api_init', array($this, 'add_api_routes'));
 		add_filter('rest_pre_dispatch', array($this, 'rest_pre_dispatch'), 10, 2);
-		add_filter('rest_authentication_errors', array($this, 'rest_server_to_server_authentication'));
 		$this->gutenberg_compatibility();
-	}
-
-	public function rest_server_to_server_authentication($result)
-	{
-		$result = false;
-
-		// $yourEncryptAPIKey = $_GET['request'];
-
-		// if (yourDecryptFn($yourEncryptAPIKey) === $realKey) :
-		// 	$result = true;
-
-		// else :
-		// 	$result = false;
-
-		// endif;
-
-		return $result;
 	}
 
 	/**
