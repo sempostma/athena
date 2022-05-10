@@ -1,7 +1,6 @@
 === Plugin Name ===
-Contributors: bunkersem
-Description: Bridges the gap between Wordpress and Athena Apps
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=polyismstudio@gmail.com&item_name=Athena+Wordpress+Plugin&item_number=Athena+Wordpress+Plugin+Campain
+Contributors: Sem Postma
+Description: Bridges the gap between Wordpress and Echo Sierra Studio Apps
 Tags: echo sierra studio, app, athena
 Requires at least: 5.4
 Tested up to: 5.4
@@ -29,11 +28,11 @@ Download link: https://github.com/sempostma/athena/raw/master/athena.zip
 
 = I'm interested in developing an app =
 
-Please head over to [esstudio](https://esstudio.site/contact) and send us an email.
+Please head over to [esstudio](https://esstudio.nl/contact) and send us an email.
 
 = I'm stuck, what now? =
 
-Please head over to [esstudio](https://esstudio.site/contact) and send me an email.
+Please head over to [esstudio](https://esstudio.nl/contact) and send me an email.
 
 == Screenshots ==
 
